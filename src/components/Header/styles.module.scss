@@ -1,0 +1,62 @@
+@import "../../utilities/variables";
+
+.chatHeader {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	height: 40px;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	margin-top: 50px;
+	margin-right: $chatMargin;
+	margin-left: $chatMargin;
+	padding-top: 10px;
+	padding-right: 10px;
+	padding-left: 10px;
+	position: fixed;
+	background-color: #1C8ADB;
+	font-size: 16px;
+	color: white;
+	border-radius: 2px;
+	z-index: 1000;
+}
+
+.chatInfo {
+	display: flex;
+	flex-direction: row;
+}
+
+.chatInfo p {
+	margin-left: 20px;
+}
+
+.lastMessageInfo {
+	margin-right: 20px;
+}
+
+@media all and (max-width: 380px) {
+	.chatHeader {
+		width: 100%;
+		margin-left: 0px;
+		margin-right: 0px;
+		padding-top: 8px;
+		font-size: 12px;
+	}
+	.chatInfo p {
+		margin-left: 5px;
+	}
+	
+	.lastMessageInfo {
+		margin-right: 5px;
+	}
+}
+
+@media all and (max-width: 590px) {
+	.chatHeader {
+		width: 100%;
+		margin-left: 0px;
+		margin-right: 0px;
+		font-size: 14px;
+	}
+}

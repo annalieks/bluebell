@@ -1,0 +1,19 @@
+.formWrapper {
+	padding-top: 89px;
+	background-color: #d5e4fc !important;
+}
+
+.form {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.text {
+	width: 95%;
+	font-size: 15px;
+}
+
+.button {
+	height: 50px;
+}

@@ -1,0 +1,17 @@
+@import "../../utilities/variables";
+
+.chatContainer {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	margin-left: $chatMargin;
+	margin-right: $chatMargin;
+}
+
+
+@media all and (max-width: 590px) {
+	.chatContainer {
+		margin-left: $mobileChatMargin;
+		margin-right: $mobileChatMargin;
+	}
+}
