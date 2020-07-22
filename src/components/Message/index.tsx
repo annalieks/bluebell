@@ -47,9 +47,12 @@ const Message = (props: IProps) => {
 				isOwnMessage
 				? styles.ownMessage
 				: styles.othersMessage}>
-				<Comment.Avatar src={props.message.avatar} />
+				{!isOwnMessage &&
+				<Comment.Avatar src={props.message.avatar} />}
 				<Comment.Content>
-					<Comment.Author>{props.message.user}</Comment.Author>
+					<Comment.Author className={styles.author}>
+						{isOwnMessage ? 'Me' : props.message.user}
+					</Comment.Author>
 					<Comment.Metadata>
 						{moment(props.message.createdAt).format('HH:mm:ss')}
 						<Icon
