@@ -1,4 +1,5 @@
 import React, { useState, MutableRefObject, useRef, useEffect } from 'react'
+import PropTypes from 'prop-types';
 import { Segment, Form, Button } from 'semantic-ui-react'
 import { IAddMessage } from '../../types';
 
@@ -51,6 +52,10 @@ const MessageInput = (props: IProps) => {
 			</Segment>
 		</div>
 	);
+}
+
+MessageInput.propTypes = {
+	addMessage: PropTypes.func.isRequired
 }
 
 export default MessageInput;

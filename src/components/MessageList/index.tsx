@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment'
 import _ from 'lodash'
 import { IMessageData, IUpdateMessage } from '../../types'
@@ -45,6 +46,14 @@ const MessageList = (props: IProps) => {
 		}
 		</div>
 	);
+}
+
+MessageList.propTypes = {
+	messages: PropTypes.arrayOf(PropTypes.any).isRequired,
+	updateMessage: PropTypes.func.isRequired,
+	deleteMessage: PropTypes.func.isRequired,
+	likeMessage: PropTypes.func.isRequired,
+	userId: PropTypes.string
 }
 
 export default MessageList;

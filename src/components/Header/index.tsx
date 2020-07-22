@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import { IMessageData } from '../../types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers, faEnvelope } from '@fortawesome/free-solid-svg-icons'
@@ -27,6 +28,10 @@ const Header = (props: IProps) => {
 			</div>
 		</div>
 	);
+}
+
+Header.propTypes = {
+	messages: PropTypes.arrayOf(PropTypes.any).isRequired
 }
 
 export default Header;

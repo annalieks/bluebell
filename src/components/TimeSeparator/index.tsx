@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 import moment from 'moment'
 import { Divider } from 'semantic-ui-react';
 
@@ -23,6 +24,10 @@ const TimeSeparator = (props: IProps) => {
 	return (
 		<Divider horizontal>{ getDate() }</Divider>
 	)
+}
+
+TimeSeparator.propTypes = {
+	date: PropTypes.string
 }
 
 export default TimeSeparator;

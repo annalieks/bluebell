@@ -1,4 +1,5 @@
 import React, { useState, MutableRefObject, useRef } from 'react'
+import PropTypes from 'prop-types';
 import { IMessageData, IUpdateMessage } from '../../types'
 import moment from 'moment'
 import { Comment, Icon } from 'semantic-ui-react'
@@ -104,6 +105,14 @@ const Message = (props: IProps) => {
 			</Comment>
   		</Comment.Group>
 	);
+}
+
+Message.propTypes = {
+	message: PropTypes.objectOf(PropTypes.any).isRequired,
+	updateMessage: PropTypes.func.isRequired,
+	deleteMessage: PropTypes.func.isRequired,
+	likeMessage: PropTypes.func.isRequired,
+	userId: PropTypes.string
 }
 
 export default Message;
