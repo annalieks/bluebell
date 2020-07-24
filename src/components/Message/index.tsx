@@ -1,7 +1,7 @@
 import React, { useState, MutableRefObject, useRef } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import {Icon, Image} from 'semantic-ui-react';
+import { Icon, Image } from 'semantic-ui-react';
 import { IMessageData, IUpdateMessage } from '../../types';
 import styles from './styles.module.scss';
 
@@ -48,74 +48,74 @@ const Message = ({
   return (
     <div className={messageClasses}>
       <div className={styles.messageContent}>
+        {
+          !isOwnMessage
+          && <Image src={message.avatar} className={styles.messageAvatar} avatar />
+        }
+        <div className={styles.messageText}>
+          <div className={styles.author}>
+            {message.user}
+          </div>
+          <div className={styles.text}>
+            {message.text}
+          </div>
+        </div>
+        <div className={styles.icons}>
+          {
+              isEditable
+              && (
+              <Icon
+                name="save"
+                onClick={handleUpdateMessage}
+              />
+              )
+              }
+          {
+              !isEditable && isOwnMessage
+              && (
+              <Icon
+                name="edit"
+                onClick={() => {
+                  setIsEditable(!isEditable);
+                  focus();
+                }}
+              />
+              )
+              }
+          {
+              isOwnMessage
+              && (
+              <Icon
+                name="delete"
+                onClick={() => {
+                  deleteMessage(message.id);
+                }}
+              />
+              )
+              }
           {
               !isOwnMessage
-              && <Image src={message.avatar} className={styles.messageAvatar} avatar />
-          }
-          <div className={styles.messageText}>
-             <div className={styles.author}>
-                {message.user}
-             </div>
-             <div className={styles.text}>
-              {message.text}
-             </div>
-    </div>
-          <div className={styles.icons}>
-              {
-                  isEditable
-                  && (
-                      <Icon
-                          name="save"
-                          onClick={handleUpdateMessage}
-                      />
-                  )
-              }
-              {
-                  !isEditable && isOwnMessage
-                  && (
-                      <Icon
-                          name="edit"
-                          onClick={() => {
-                              setIsEditable(!isEditable);
-                              focus();
-                          }}
-                      />
-                  )
-              }
-              {
-                  isOwnMessage
-                  && (
-                      <Icon
-                          name="delete"
-                          onClick={() => {
-                              deleteMessage(message.id);
-                          }}
-                      />
-                  )
-              }
-              {
-                  !isOwnMessage
-                  && (
-                      <Icon
-                          name="heart"
-                          className={isLike ? styles.redHeart : styles.heart}
-                          onClick={handleLikeMessage}
-                      />
-                  )
-              }
-          </div>
-          <div className={styles.messageMeta}>
-            <div className={styles.messageTime}>
-              {moment(message.createdAt).format('HH:mm')}
-            </div>
-            <div className={styles.messageLikes}>
+              && (
               <Icon
                 name="heart"
-                className={styles.likeCountIcon}
+                className={isLike ? styles.redHeart : styles.heart}
+                onClick={handleLikeMessage}
               />
-              {message.likeCount === undefined ? 0 : message.likeCount}
-            </div>
+              )
+              }
+        </div>
+        <div className={styles.messageMeta}>
+          <div className={styles.messageTime}>
+            {moment(message.createdAt).format('HH:mm')}
           </div>
+          <div className={styles.messageLikes}>
+            <Icon
+              name="heart"
+              className={styles.likeCountIcon}
+            />
+            {message.likeCount === undefined ? 0 : message.likeCount}
+          </div>
+        </div>
       </div>
     </div>
   );

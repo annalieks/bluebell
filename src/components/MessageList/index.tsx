@@ -28,7 +28,7 @@ const MessageList = ({
           <React.Fragment key={key}>
             <TimeSeparator date={key} />
             <div className={styles.messagesGroup}>
-            {
+              {
               gropedMessages[key].map((message) => (
                 <Message
                   message={message}

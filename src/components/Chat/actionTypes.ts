@@ -1,0 +1,4 @@
+export const ADD_MESSAGE = 'ADD_MESSAGE';
+export const UPDATE_MESSAGE = 'SET_MESSAGE';
+export const DELETE_MESSAGE = 'DELETE_MESSAGE';
+export const LIKE_MESSAGE = 'DELETE_MESSAGE';
