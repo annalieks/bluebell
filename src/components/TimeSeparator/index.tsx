@@ -1,33 +1,33 @@
-import React from 'react'
+import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment'
+import moment from 'moment';
 import { Divider } from 'semantic-ui-react';
 
 interface IProps {
-	date: string;
+ date: string;
 }
 
-const TimeSeparator = (props: IProps) => {
-	const getDate = () => {
-		const diff = moment().diff(moment(props.date, 'DD/MM/YY'), 'days');
-		if(diff === 0) {
-			return 'Today';
-		} else if(diff === 1) {
-			return 'Yesterday';
-		} else if(diff <= 7) {
-			return diff + ' days ago';
-		} else {
-			return props.date;
-		}
-	}
+const TimeSeparator = ({ date }: IProps) => {
+  const getDate = () => {
+    const messagesDate = moment(date, 'DD/MM/YY');
+    const diff = moment().diff(messagesDate, 'days');
+    if (diff === 0) {
+      return messagesDate.format('[Today, ] Do MMM');
+    } if (diff === 1) {
+      return messagesDate.format('[Yesterday, ] Do MMM');
+    } if (diff < 7) {
+      return `${diff} days ago`;
+    }
+    return messagesDate.format('Do MMM');
+  };
 
-	return (
-		<Divider horizontal>{ getDate() }</Divider>
-	)
-}
+  return (
+    <Divider horizontal>{ getDate() }</Divider>
+  );
+};
 
 TimeSeparator.propTypes = {
-	date: PropTypes.string
-}
+  date: PropTypes.string.isRequired,
+};
 
 export default TimeSeparator;

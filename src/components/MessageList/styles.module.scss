@@ -4,3 +4,13 @@
 	margin-top: 100px;
 	z-index: 100;
 }
+
+.messagesGroup {
+	display: flex;
+	flex-direction: column;
+	padding: 0 20px;
+}
+
+.messagesGroup:last-child {
+	margin-bottom: 10px;
+}

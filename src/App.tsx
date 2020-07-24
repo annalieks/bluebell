@@ -1,6 +1,6 @@
 import React from 'react';
-import AppHeader from './components/AppHeader'
-import Chat from './components/Chat'
+import AppHeader from './components/AppHeader';
+import Chat from './components/Chat';
 
 function App() {
   return (
