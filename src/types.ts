@@ -7,10 +7,7 @@ export interface IMessageData {
  createdAt: string;
  editedAt: string;
  likeCount: number;
-}
-
-export interface IDatedMessages {
- [index: string]: IMessageData[];
+ isLike?: boolean;
 }
 
 export interface IAddMessage {
@@ -30,46 +27,11 @@ export interface IUser {
  avatar: string;
 }
 
-export interface IState {
+export interface ChatState {
  messages: IMessageData[];
- editedMessageId: string;
 }
 
-export interface IAction<T> {
- type: string,
- payload: T;
-}
-
-export interface IAddPayload {
+export interface EditModalState {
  id: string;
- message: IAddMessage
-}
-
-export interface IUpdatePayload {
- message: IMessageData;
-}
-
-export interface IDeletePayload {
- id: string;
-}
-
-export interface ILikePayload {
- id: string;
- isLike: boolean;
-}
-
-export function isAddPayload(object: any): object is IAddPayload {
- return ('id' in object && 'text' in object && 'createdAt' in object);
-}
-
-export function isUpdatePayload(object: any): object is IUpdatePayload {
- return 'message' in object;
-}
-
-export function isDeletePayload(object: any): object is IDeletePayload {
- return 'id' in object;
-}
-
-export function isLikePayload(object: any): object is ILikePayload {
- return 'id' in object && 'isLike' in object;
+ text: string;
 }

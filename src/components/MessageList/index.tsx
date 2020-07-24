@@ -12,14 +12,15 @@ interface IProps {
  messages: IMessageData[];
  updateMessage: (message: IUpdateMessage) => void;
  deleteMessage: (messageId: string) => void;
- likeMessage: (messageId: string, isLike: boolean) => void;
+ likeMessage: (messageId: string) => void;
  userId: string;
 }
 
 const MessageList = ({
-  messages, updateMessage, deleteMessage, likeMessage, userId,
+  messages, updateMessage, deleteMessage, likeMessage, userId
 }: IProps) => {
-  const gropedMessages = _.groupBy(messages, (message) => moment(message.createdAt).format('DD/MM/YY'));
+  const gropedMessages = _.groupBy(messages, (message) =>
+      moment(message.createdAt).format('DD/MM/YY'));
 
   return (
     <div className={styles.messagesContainer}>

@@ -1,40 +1,74 @@
-import { ADD_MESSAGE, UPDATE_MESSAGE, DELETE_MESSAGE } from "./actionTypes";
-import {IAction, IAddPayload, isAddPayload, IState, isUpdatePayload} from "../../types";
-import currentUserConfig from '../../shared/config/currentUserConfig.json'
+import {UPDATE_MESSAGE, ADD_MESSAGE, LOAD_MESSAGES, DELETE_MESSAGE, LIKE_MESSAGE, ChatActionType}
+from "./actionTypes";
 
-const initialState: IState = {
-    messages: [],
-    editedMessageId: ''
+import currentUserConfig from '../../shared/config/currentUserConfig.json'
+import {ChatState} from "../../types";
+
+const initialState: ChatState = {
+    messages: []
 };
 
-export default function<T>(state = initialState, action: IAction<T>): IState {
+export default function(state = initialState, action: ChatActionType): ChatState {
     switch (action.type) {
         case ADD_MESSAGE: {
-            if(isAddPayload(action.payload)) {
-                const { id, message }: IAddPayload = action.payload;
-                const messages = [
+            const { id, message } = action.payload;
+            return {
+                ...state,
+                messages: [
                     ...state.messages,
                     {
-                    id,
+                        id,
+                        ...message,
                         userId: currentUserConfig.userId,
                         user: currentUserConfig.user,
                         avatar: currentUserConfig.avatar,
-                        text: message.text,
-                        createdAt: message.createdAt,
                         editedAt: '',
                         likeCount: 0
-                    }]
-                return {
-                    ...state,
-                    messages
-                };
-            }
+                    }
+                ]
+            };
         }
         case UPDATE_MESSAGE: {
-            if(isUpdatePayload(action.payload)) {
+            const messages = [...state.messages];
+            const message = action.payload;
+            const updatedPos = messages.findIndex(m => m.id === message.id);
+            messages[updatedPos].text = message.text;
+            messages[updatedPos].editedAt = Date.now().toString();
+            return {
+                ...state,
+                messages
+            }
 
+        }
+        case LOAD_MESSAGES: {
+            const messages = action.payload;
+            return {
+                ...state,
+                messages: [...state.messages, ...messages]
             }
         }
+        case DELETE_MESSAGE: {
+            const id = action.payload;
+            const messages = [...state.messages].filter(m => m.id !== id);
+            return {
+                ...state,
+                messages
+            }
+        }
+        case LIKE_MESSAGE: {
+            const id  = action.payload;
+            const messages = [...state.messages];
+            const updatedPos = messages.findIndex(m => m.id === id);
+            const message = messages[updatedPos], likesNum = message.likeCount;
+            message.isLike = !message.isLike;
+            message.likeCount = likesNum == undefined ? 0 : likesNum;
+            message.likeCount += message.isLike ? 1 : -1;
+            return {
+                ...state,
+                messages
+            }
+        }
+
         default: return state;
     }
 }

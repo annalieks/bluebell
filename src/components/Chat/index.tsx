@@ -3,21 +3,26 @@ import PageLoader from '../PageLoader';
 import Header from '../Header';
 import MessageList from '../MessageList';
 import MessageInput from '../MessageInput';
-import {
-  IAddMessage, IUser, IMessageData, IUpdateMessage,
-} from '../../types';
+import {IMessageData, ChatState} from '../../types';
+import * as actions from './actions'
+import  { connect } from 'react-redux'
+import dataSourceConfig from '../../shared/config/dataSourceConfig.json'
+import currentUserConfig from '../../shared/config/currentUserConfig.json'
 
 import styles from './styles.module.scss';
+import moment from "moment";
 
-const Chat = () => {
-  const [messages, setMessages] = useState([] as IMessageData[]);
+const Chat = (props: any) => {
+
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch('https://edikdolynskyi.github.io/react_sources/messages.json')
+    fetch(dataSourceConfig.url)
       .then((response) => response.json())
       .then((result) => {
-        setMessages(result);
+          const sorted = result.sort((lhs: IMessageData, rhs: IMessageData) =>
+              moment(rhs.createdAt).isAfter(lhs.createdAt));
+        props.loadMessages(sorted);
         setIsLoading(false);
       });
   }, []);
@@ -26,15 +31,15 @@ const Chat = () => {
     ? <PageLoader />
     : (
       <div className={styles.chatContainer}>
-        <Header messages={messages} />
+        <Header messages={props.messages} />
         <MessageList
-          messages={messages}
-          userId={currUser.userId}
-          updateMessage={updateMessage}
-          deleteMessage={deleteMessage}
-          likeMessage={likeMessage}
+          messages={props.messages}
+          userId={currentUserConfig.userId}
+          updateMessage={props.updateMessage}
+          deleteMessage={props.deleteMessage}
+          likeMessage={props.likeMessage}
         />
-        <MessageInput addMessage={addMessage} />
+        <MessageInput addMessage={props.addMessage} />
       </div>
     )
   );
@@ -42,4 +47,14 @@ const Chat = () => {
   return getView();
 };
 
-export default Chat;
+const mapStateToProps = (state: { chat: ChatState }) => {
+    return {
+        messages: state.chat.messages
+    };
+}
+
+const mapDispatchToProps = {
+    ...actions
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Chat);

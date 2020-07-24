@@ -1,4 +1,4 @@
-import React, { useState, MutableRefObject, useRef } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Icon, Image } from 'semantic-ui-react';
@@ -9,39 +9,40 @@ interface IProps {
  message: IMessageData;
  updateMessage: (message: IUpdateMessage) => void;
  deleteMessage: (messageId: string) => void;
- likeMessage: (messageId: string, isLike: boolean) => void;
+ likeMessage: (messageId: string) => void;
  userId: string;
 }
 
 const Message = ({
-  message, updateMessage, deleteMessage, likeMessage, userId,
+  message, updateMessage, deleteMessage, likeMessage, userId
 }: IProps) => {
-  const [isLike, setIsLike] = useState(false);
-  const [isEditable, setIsEditable] = useState(false);
-  const [body, setBody] = useState(message.text);
-  const textInput = useRef() as MutableRefObject<HTMLTextAreaElement>;
   const isOwnMessage: boolean = message.userId === userId;
 
-  const focus = () => {
-    textInput.current.focus();
-  };
-
-  const handleUpdateMessage = () => {
-    if (body.length === 0) {
-      return;
-    }
-    updateMessage({
-      id: message.id,
-      text: body,
-      editedAt: (new Date()).toString(),
-    });
-    setIsEditable(!isEditable);
-  };
-
   const handleLikeMessage = () => {
-    likeMessage(message.id, !isLike);
-    setIsLike(!isLike);
+    likeMessage(message.id);
   };
+
+  const getIcons = () => (isOwnMessage
+      ?
+          <>
+              <Icon
+                  name="edit"
+                  onClick={() => {
+                  }}
+              />
+              <Icon
+                  name="delete"
+                  onClick={() => {
+                    deleteMessage(message.id);
+                  }}
+              />
+          </>
+      : <Icon
+              name="heart"
+              className={message.isLike ? styles.redHeart : styles.heart}
+              onClick={handleLikeMessage}
+          />
+  )
 
   const messageClasses = `${styles.message} ${isOwnMessage ? styles.ownMessage : styles.othersMessage}`;
 
@@ -61,48 +62,7 @@ const Message = ({
           </div>
         </div>
         <div className={styles.icons}>
-          {
-              isEditable
-              && (
-              <Icon
-                name="save"
-                onClick={handleUpdateMessage}
-              />
-              )
-              }
-          {
-              !isEditable && isOwnMessage
-              && (
-              <Icon
-                name="edit"
-                onClick={() => {
-                  setIsEditable(!isEditable);
-                  focus();
-                }}
-              />
-              )
-              }
-          {
-              isOwnMessage
-              && (
-              <Icon
-                name="delete"
-                onClick={() => {
-                  deleteMessage(message.id);
-                }}
-              />
-              )
-              }
-          {
-              !isOwnMessage
-              && (
-              <Icon
-                name="heart"
-                className={isLike ? styles.redHeart : styles.heart}
-                onClick={handleLikeMessage}
-              />
-              )
-              }
+            {getIcons()}
         </div>
         <div className={styles.messageMeta}>
           <div className={styles.messageTime}>
