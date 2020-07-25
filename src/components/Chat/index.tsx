@@ -58,7 +58,7 @@ const Chat = (props: Props) => {
       .then((response) => response.json())
       .then((result) => {
         const sortedMessages = result.sort(
-          (lhs: MessageData, rhs: MessageData) => moment(rhs.createdAt).isAfter(lhs.createdAt),
+          (lhs: MessageData, rhs: MessageData) => moment(lhs.createdAt).diff(moment(rhs.createdAt)),
         );
         load(sortedMessages);
         setIsLoading(false);

@@ -36,7 +36,7 @@ const EditModal = (props: Props) => {
   const focus = () => inputRef?.current?.focus();
 
   useEffect(() => {
-    if(message) setBody(message?.text);
+    if (message) setBody(message?.text);
     focus();
   }, [message]);
 
