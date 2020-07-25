@@ -3,13 +3,13 @@ import moment from 'moment';
 import { Icon, Image } from 'semantic-ui-react';
 import currentUserConfig from '../../shared/config/currentUserConfig.json'
 import styles from './styles.module.scss';
-import {IMessageData} from "../../types";
+import {MessageData} from "../../types";
 
 type Props = {
-    message: IMessageData,
+    message: MessageData,
     delete: (id: string) => void;
     like: (id: string) => void;
-    edit: (message: IMessageData) => void;
+    edit: (message: MessageData) => void;
 }
 
 const Message = (props: Props) => {

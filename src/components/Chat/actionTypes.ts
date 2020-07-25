@@ -1,4 +1,4 @@
-import {IAddMessage, IMessageData, IUpdateMessage} from "../../types";
+import {AddMessageData, MessageData, UpdateMessageData} from "../../types";
 
 export const ADD_MESSAGE = 'ADD_MESSAGE';
 export const UPDATE_MESSAGE = 'UPDATE_MESSAGE';
@@ -10,12 +10,12 @@ export const CANCEL_EDIT_MESSAGE = 'CANCEL_EDIT_MESSAGE';
 
 interface AddMessageAction {
     type: typeof ADD_MESSAGE,
-    payload: { id: string, message: IAddMessage }
+    payload: { id: string, message: AddMessageData }
 }
 
 interface UpdateMessageAction {
     type: typeof UPDATE_MESSAGE,
-    payload: IUpdateMessage
+    payload: UpdateMessageData
 }
 
 interface DeleteMessageAction {
@@ -30,12 +30,12 @@ interface LikeMessageAction {
 
 interface LoadMessagesAction {
     type: typeof LOAD_MESSAGES,
-    payload: IMessageData[]
+    payload: MessageData[]
 }
 
 interface OpenEditMessageAction {
     type: typeof OPEN_EDIT_MESSAGE,
-    payload: IMessageData
+    payload: MessageData
 }
 
 interface CancelEditMessageAction {

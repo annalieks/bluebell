@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import _ from 'lodash';
-import {IMessageData } from '../../types';
+import {MessageData } from '../../types';
 import TimeSeparator from '../TimeSeparator';
 import Message from '../Message';
 
@@ -9,10 +9,10 @@ import styles from './styles.module.scss';
 import EditModal from "../EditModal";
 
 type Props = {
-    messages: IMessageData[],
+    messages: MessageData[],
     delete: (id: string) => void;
     like: (id: string) => void;
-    edit: (message: IMessageData) => void;
+    edit: (message: MessageData) => void;
 }
 
 const MessageList = (props: Props) => {

@@ -3,7 +3,7 @@ import PageLoader from '../PageLoader';
 import Header from '../Header';
 import MessageList from '../MessageList';
 import MessageInput from '../MessageInput';
-import {IMessageData, ChatState} from '../../types';
+import {MessageData, ChatState} from '../../types';
 import * as actions from './actions'
 import  { connect } from 'react-redux'
 import dataSourceConfig from '../../shared/config/dataSourceConfig.json'
@@ -21,11 +21,9 @@ const Chat = (props: Props) => {
     const {
         messages,
         addMessage: add,
-        updateMessage: update,
         deleteMessage: delete_,
         likeMessage: like,
-        openEditMessage: edit,
-        cancelEditMessage: cancel
+        openEditMessage: edit
     } = props;
 
   const [isLoading, setIsLoading] = useState(true);
@@ -33,7 +31,7 @@ const Chat = (props: Props) => {
     const handleKeyPress = (e: KeyboardEvent) => {
         const { key } = e;
         const message = _.findLast(messages,
-            (m: IMessageData) => m.userId === currentUserConfig.userId);
+            (m: MessageData) => m.userId === currentUserConfig.userId);
         if (key === 'ArrowUp' && message) {
             props.openEditMessage(message);
         }
@@ -51,7 +49,7 @@ const Chat = (props: Props) => {
     fetch(dataSourceConfig.url)
       .then((response) => response.json())
       .then((result) => {
-          const sorted = result.sort((lhs: IMessageData, rhs: IMessageData) =>
+          const sorted = result.sort((lhs: MessageData, rhs: MessageData) =>
               moment(rhs.createdAt).isAfter(lhs.createdAt));
         props.loadMessages(sorted);
         setIsLoading(false);
@@ -65,7 +63,6 @@ const Chat = (props: Props) => {
         <Header messages={messages} />
         <MessageList
           messages={messages}
-          update={update}
           delete={delete_}
           like={like}
           edit={edit}

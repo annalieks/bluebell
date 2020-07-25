@@ -8,12 +8,12 @@ import {
     OPEN_EDIT_MESSAGE,
     UPDATE_MESSAGE
 } from "./actionTypes";
-import {IAddMessage, IMessageData, IUpdateMessage,} from '../../types';
+import {AddMessageData, MessageData, UpdateMessageData,} from '../../types';
 
 import service from './service'
 
 
-export const addMessage = (message: IAddMessage) : ChatActionType => ({
+export const addMessage = (message: AddMessageData) : ChatActionType => ({
     type: ADD_MESSAGE,
     payload: {
         id: service.getNewId(),
@@ -21,7 +21,7 @@ export const addMessage = (message: IAddMessage) : ChatActionType => ({
     }
 })
 
-export const updateMessage = (message: IUpdateMessage) : ChatActionType => ({
+export const updateMessage = (message: UpdateMessageData) : ChatActionType => ({
     type: UPDATE_MESSAGE,
     payload: message
 })
@@ -36,12 +36,12 @@ export const likeMessage = (id: string) : ChatActionType => ({
     payload: id
 })
 
-export const loadMessages = (messages: IMessageData[]) : ChatActionType => ({
+export const loadMessages = (messages: MessageData[]) : ChatActionType => ({
     type: LOAD_MESSAGES,
     payload: messages
 })
 
-export const openEditMessage = (message: IMessageData) : ChatActionType => ({
+export const openEditMessage = (message: MessageData) : ChatActionType => ({
     type: OPEN_EDIT_MESSAGE,
     payload: message
 })

@@ -2,12 +2,20 @@ import React, {MutableRefObject, useEffect, useRef, useState} from 'react'
 
 import styles from './styles.module.scss'
 import {connect} from 'react-redux';
-import { ChatState } from "../../types";
-import {Button, Form, Header, Icon, Modal, TextArea} from "semantic-ui-react";
-import {cancelEditMessage, openEditMessage, updateMessage} from "../Chat/actions";
+import { ChatState } from '../../types';
+import {Button, Form, Header, Icon, Modal, TextArea} from 'semantic-ui-react';
+import {cancelEditMessage, openEditMessage, updateMessage} from '../Chat/actions';
+import _ from "lodash";
 
-const EditModal = (props: any) => {
-    const { editMessage, updateMessage, cancelEditMessage } = props;
+type Props = ReturnType<typeof mapStateToProps> &
+    typeof mapDispatchToProps
+
+const EditModal = (props: Props) => {
+    const {
+        editingMessage: message,
+        updateMessage: update,
+        cancelEditMessage: cancel
+    } = props;
     const [body, setBody] = useState('');
     const inputRef = useRef() as MutableRefObject<TextArea>;
 
@@ -20,20 +28,26 @@ const EditModal = (props: any) => {
     })
 
     const handleCancel = () => {
-        cancelEditMessage();
+        cancel();
         setBody('');
     }
 
     const handleEdit = () => {
-        updateMessage({
-            id: editMessage.id,
-            text: body,
+        if(!body || !message) {
+            cancel();
+            return;
+        }
+        const text = _.trim(body);
+        if(text.length == 0) return;
+        update({
+            id: message.id,
+            text,
             editedAt: Date.now().toString()
         })
         setBody('');
     }
     const getView = () => (
-        editMessage != null
+        message!= null
         ? <Modal
                 basic size='small'
                 dimmer={'blurring'}
@@ -42,7 +56,7 @@ const EditModal = (props: any) => {
                 <Modal.Content>
                 <Form>
                     <TextArea
-                        value={body || editMessage?.text}
+                        value={body || message?.text}
                         className={styles.textArea}
                         ref={inputRef}
                         onChange={(e,{value}) => setBody(value as string)}
@@ -73,7 +87,7 @@ const EditModal = (props: any) => {
 
 const mapStateToProps = (state: { chat: ChatState }) => {
     return {
-        editMessage: state.chat.editMessage
+        editingMessage: state.chat.editingMessage
     };
 }
 

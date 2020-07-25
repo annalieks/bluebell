@@ -1,4 +1,4 @@
-export interface IMessageData {
+export type MessageData = {
  id: string;
  userId: string;
  user: string;
@@ -10,24 +10,24 @@ export interface IMessageData {
  isLike?: boolean;
 }
 
-export interface IAddMessage {
+export type AddMessageData = {
  text: string;
  createdAt: string;
 }
 
-export interface IUpdateMessage {
+export type UpdateMessageData = {
  id: string;
  text: string;
  editedAt: string;
 }
 
-export interface IUser {
+export type User = {
  userId: string;
  user: string;
  avatar: string;
 }
 
-export interface ChatState {
- messages: IMessageData[];
- editMessage: IMessageData | undefined;
+export type ChatState = {
+ messages: MessageData[];
+ editingMessage: MessageData | undefined;
 }

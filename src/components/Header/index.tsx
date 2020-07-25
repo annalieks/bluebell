@@ -3,12 +3,12 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers, faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import { IMessageData } from '../../types';
+import { MessageData } from '../../types';
 
 import styles from './styles.module.scss';
 
 interface IProps {
- messages: IMessageData[];
+ messages: MessageData[];
 }
 
 const Header = ({ messages }: IProps) => {
