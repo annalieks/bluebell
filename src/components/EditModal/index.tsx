@@ -33,12 +33,11 @@ const EditModal = (props: Props) => {
   const [body, setBody] = useState('');
   const inputRef = useRef() as MutableRefObject<TextArea>;
 
-  const focus = () => inputRef?.current?.focus();
-
   useEffect(() => {
+    const focus = () => inputRef?.current?.focus();
     if (message) setBody(message?.text);
     focus();
-  }, [message]);
+  }, [message, inputRef]);
 
   const handleCancel = () => {
     cancel();
