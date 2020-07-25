@@ -1,4 +1,4 @@
-import {AddMessageData, MessageData, UpdateMessageData} from "../../types";
+import { AddMessageData, MessageData, UpdateMessageData } from '../../types';
 
 export const ADD_MESSAGE = 'ADD_MESSAGE';
 export const UPDATE_MESSAGE = 'UPDATE_MESSAGE';

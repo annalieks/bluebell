@@ -3,29 +3,33 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import { Segment, Form, Button } from 'semantic-ui-react';
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
-import styles from './styles.module.scss';
-import {addMessage} from "../Chat/actions";
-import {connect} from "react-redux";
 import _ from 'lodash';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import styles from './styles.module.scss';
+import { AddMessageData } from '../../types';
 
-type Props = typeof mapDispatchToProps
+type Props = {
+  add: (message: AddMessageData) => void;
+}
 
 const MessageInput = (props: Props) => {
+  const { add } = props;
   const [body, setBody] = useState('');
   const messagesEndRef = useRef() as MutableRefObject<HTMLDivElement>;
 
   const addNewLineToTextArea = () => {
-    setBody(body + '\n');
-  }
+    setBody(`${body}\n`);
+  };
 
   const handleAddMessage = () => {
-    if (!body || body.length == 0) {
+    if (!body || body.length === 0) {
       return;
     }
     const text = _.trim(body);
-    if(text.length === 0) return;
-    props.addMessage({
+    if (text.length === 0) return;
+    add({
       text,
       createdAt: (new Date()).toString(),
     });
@@ -34,15 +38,15 @@ const MessageInput = (props: Props) => {
 
   const handleKeyPress = (e: KeyboardEvent) => {
     const { key } = e;
-    console.log(e.shiftKey && key == 'Enter');
     if (key === 'Enter' && e.shiftKey) {
       e.preventDefault();
       addNewLineToTextArea();
-    } else if(key === 'Enter') {
+    } else if (key === 'Enter') {
+      e.preventDefault();
       handleAddMessage();
       setBody('');
     }
-  }
+  };
 
   useEffect(() => {
     messagesEndRef.current.scrollIntoView({ block: 'end', behavior: 'smooth' });
@@ -57,7 +61,7 @@ const MessageInput = (props: Props) => {
             value={body}
             className={styles.text}
             placeholder="Write your message here"
-            onChange={e => setBody((e.target as HTMLTextAreaElement).value)}
+            onChange={(e) => setBody((e.target as HTMLTextAreaElement).value)}
             onKeyDown={(e: KeyboardEvent) => handleKeyPress(e)}
           />
           <Button
@@ -66,7 +70,7 @@ const MessageInput = (props: Props) => {
             type="submit"
             className={styles.button}
           >
-            Send
+            <FontAwesomeIcon icon={faPaperPlane} className={styles.sendIcon} />
           </Button>
         </Form>
       </Segment>
@@ -74,12 +78,8 @@ const MessageInput = (props: Props) => {
   );
 };
 
-const mapDispatchToProps = {
-  addMessage
-}
-
 MessageInput.propTypes = {
-  addMessage: PropTypes.func.isRequired
-}
+  add: PropTypes.func.isRequired,
+};
 
-export default connect(null, mapDispatchToProps)(MessageInput);
+export default MessageInput;

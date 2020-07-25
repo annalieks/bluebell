@@ -1,9 +1,10 @@
 import React from 'react';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import { Icon, Image } from 'semantic-ui-react';
-import currentUserConfig from '../../shared/config/currentUserConfig.json'
+import currentUserConfig from '../../shared/config/currentUserConfig.json';
 import styles from './styles.module.scss';
-import {MessageData} from "../../types";
+import { MessageData } from '../../types';
 
 type Props = {
     message: MessageData,
@@ -13,7 +14,9 @@ type Props = {
 }
 
 const Message = (props: Props) => {
-    const { message, delete: delete_, like, edit } = props;
+  const {
+    message, delete: delete_, like, edit,
+  } = props;
   const isOwnMessage: boolean = message.userId === currentUserConfig.userId;
 
   const handleLikeMessage = () => {
@@ -21,23 +24,26 @@ const Message = (props: Props) => {
   };
 
   const getIcons = () => (isOwnMessage
-      ?
-          <>
-              <Icon
-                  name="edit"
-                  onClick={() => edit(message)}
-              />
-              <Icon
-                  name="delete"
-                  onClick={() => delete_(message.id)}
-              />
-          </>
-      : <Icon
-              name="heart"
-              className={message.isLike ? styles.redHeart : styles.heart}
-              onClick={handleLikeMessage}
-          />
-  )
+    ? (
+      <>
+        <Icon
+          name="cog"
+          onClick={() => edit(message)}
+        />
+        <Icon
+          name="delete"
+          onClick={() => delete_(message.id)}
+        />
+      </>
+    )
+    : (
+      <Icon
+        name="heart"
+        className={message.isLike ? styles.redHeart : styles.heart}
+        onClick={handleLikeMessage}
+      />
+    )
+  );
 
   const messageClasses = `${styles.message} ${isOwnMessage ? styles.ownMessage : styles.othersMessage}`;
 
@@ -57,7 +63,7 @@ const Message = (props: Props) => {
           </div>
         </div>
         <div className={styles.icons}>
-            {getIcons()}
+          {getIcons()}
         </div>
         <div className={styles.messageMeta}>
           <div className={styles.messageTime}>
@@ -74,6 +80,13 @@ const Message = (props: Props) => {
       </div>
     </div>
   );
+};
+
+Message.propTypes = {
+  message: PropTypes.objectOf(PropTypes.any).isRequired,
+  delete: PropTypes.func.isRequired,
+  like: PropTypes.func.isRequired,
+  edit: PropTypes.func.isRequired,
 };
 
 export default Message;

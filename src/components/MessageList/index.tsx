@@ -1,12 +1,13 @@
 import React from 'react';
 import moment from 'moment';
 import _ from 'lodash';
-import {MessageData } from '../../types';
+import PropTypes from 'prop-types';
+import { MessageData } from '../../types';
 import TimeSeparator from '../TimeSeparator';
 import Message from '../Message';
 
 import styles from './styles.module.scss';
-import EditModal from "../EditModal";
+import EditModal from '../EditModal';
 
 type Props = {
     messages: MessageData[],
@@ -16,14 +17,15 @@ type Props = {
 }
 
 const MessageList = (props: Props) => {
-  const { messages, delete: delete_, like, edit } = props;
+  const {
+    messages, delete: delete_, like, edit,
+  } = props;
 
-  const groupedMessages = _.groupBy(messages, (message) =>
-      moment(message.createdAt).format('DD/MM/YY'));
+  const groupedMessages = _.groupBy(messages, (message) => moment(message.createdAt).format('DD/MM/YY'));
 
   return (
     <div className={styles.messagesContainer}>
-        <EditModal />
+      <EditModal />
       {
         Object.keys(groupedMessages).map((key) => (
           <React.Fragment key={key}>
@@ -46,6 +48,13 @@ const MessageList = (props: Props) => {
       }
     </div>
   );
+};
+
+MessageList.propTypes = {
+  messages: PropTypes.arrayOf(PropTypes.any).isRequired,
+  delete: PropTypes.func.isRequired,
+  like: PropTypes.func.isRequired,
+  edit: PropTypes.func.isRequired,
 };
 
 export default MessageList;
