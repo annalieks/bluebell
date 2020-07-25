@@ -36,8 +36,9 @@ const EditModal = (props: Props) => {
   const focus = () => inputRef?.current?.focus();
 
   useEffect(() => {
+    if(message) setBody(message?.text);
     focus();
-  });
+  }, [message]);
 
   const handleCancel = () => {
     cancel();
@@ -71,7 +72,7 @@ const EditModal = (props: Props) => {
           <Modal.Content>
             <Form>
               <TextArea
-                value={body || message?.text}
+                value={body}
                 className={styles.textArea}
                 ref={inputRef}
                 onChange={(e, { value }) => setBody(value as string)}
