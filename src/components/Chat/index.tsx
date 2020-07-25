@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import PageLoader from '../PageLoader';
 import Header from '../Header';
 import MessageList from '../MessageList';
@@ -10,11 +10,42 @@ import dataSourceConfig from '../../shared/config/dataSourceConfig.json'
 import currentUserConfig from '../../shared/config/currentUserConfig.json'
 
 import styles from './styles.module.scss';
-import moment from "moment";
+import moment from 'moment';
+import _ from 'lodash';
 
-const Chat = (props: any) => {
+type Props = ReturnType<typeof mapStateToProps> &
+    typeof mapDispatchToProps
+
+const Chat = (props: Props) => {
+
+    const {
+        messages,
+        addMessage: add,
+        updateMessage: update,
+        deleteMessage: delete_,
+        likeMessage: like,
+        openEditMessage: edit,
+        cancelEditMessage: cancel
+    } = props;
 
   const [isLoading, setIsLoading] = useState(true);
+
+    const handleKeyPress = (e: KeyboardEvent) => {
+        const { key } = e;
+        const message = _.findLast(messages,
+            (m: IMessageData) => m.userId === currentUserConfig.userId);
+        if (key === 'ArrowUp' && message) {
+            props.openEditMessage(message);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('keydown', handleKeyPress);
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyPress);
+        }
+    }, [messages]);
 
   useEffect(() => {
     fetch(dataSourceConfig.url)
@@ -31,15 +62,15 @@ const Chat = (props: any) => {
     ? <PageLoader />
     : (
       <div className={styles.chatContainer}>
-        <Header messages={props.messages} />
+        <Header messages={messages} />
         <MessageList
-          messages={props.messages}
-          userId={currentUserConfig.userId}
-          updateMessage={props.updateMessage}
-          deleteMessage={props.deleteMessage}
-          likeMessage={props.likeMessage}
+          messages={messages}
+          update={update}
+          delete={delete_}
+          like={like}
+          edit={edit}
         />
-        <MessageInput addMessage={props.addMessage} />
+        <MessageInput addMessage={add} />
       </div>
     )
   );

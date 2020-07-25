@@ -5,6 +5,8 @@ export const UPDATE_MESSAGE = 'UPDATE_MESSAGE';
 export const DELETE_MESSAGE = 'DELETE_MESSAGE';
 export const LIKE_MESSAGE = 'LIKE_MESSAGE';
 export const LOAD_MESSAGES = 'LOAD_MESSAGES';
+export const OPEN_EDIT_MESSAGE = 'OPEN_EDIT_MESSAGE';
+export const CANCEL_EDIT_MESSAGE = 'CANCEL_EDIT_MESSAGE';
 
 interface AddMessageAction {
     type: typeof ADD_MESSAGE,
@@ -31,9 +33,20 @@ interface LoadMessagesAction {
     payload: IMessageData[]
 }
 
+interface OpenEditMessageAction {
+    type: typeof OPEN_EDIT_MESSAGE,
+    payload: IMessageData
+}
+
+interface CancelEditMessageAction {
+    type: typeof CANCEL_EDIT_MESSAGE
+}
+
 export type ChatActionType =
     AddMessageAction
     | UpdateMessageAction
     | DeleteMessageAction
     | LikeMessageAction
-    | LoadMessagesAction;
+    | LoadMessagesAction
+    | OpenEditMessageAction
+    | CancelEditMessageAction;

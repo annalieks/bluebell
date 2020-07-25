@@ -6,12 +6,10 @@ import { Segment, Form, Button } from 'semantic-ui-react';
 import { IAddMessage } from '../../types';
 
 import styles from './styles.module.scss';
+import {addMessage} from "../Chat/actions";
+import {connect} from "react-redux";
 
-interface IProps {
- addMessage: (value: IAddMessage) => void;
-}
-
-const MessageInput = (props: IProps) => {
+const MessageInput = (props: any) => {
   const [body, setBody] = useState('');
   const messagesEndRef = useRef() as MutableRefObject<HTMLDivElement>;
 
@@ -39,9 +37,7 @@ const MessageInput = (props: IProps) => {
             value={body}
             className={styles.text}
             placeholder="Write your message here"
-            onChange={
-              (e: React.FormEvent<HTMLTextAreaElement>)
-                  : void => setBody((e.target as HTMLTextAreaElement).value)
+            onChange={e => setBody((e.target as HTMLTextAreaElement).value)
             }
           />
           <Button
@@ -58,8 +54,8 @@ const MessageInput = (props: IProps) => {
   );
 };
 
-MessageInput.propTypes = {
-  addMessage: PropTypes.func.isRequired,
-};
+const mapDispatchToProps = {
+  addMessage
+}
 
-export default MessageInput;
+export default connect(null, mapDispatchToProps)(MessageInput);

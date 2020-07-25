@@ -29,9 +29,5 @@ export interface IUser {
 
 export interface ChatState {
  messages: IMessageData[];
-}
-
-export interface EditModalState {
- id: string;
- text: string;
+ editMessage: IMessageData | undefined;
 }

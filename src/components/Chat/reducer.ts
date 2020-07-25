@@ -1,14 +1,25 @@
-import {UPDATE_MESSAGE, ADD_MESSAGE, LOAD_MESSAGES, DELETE_MESSAGE, LIKE_MESSAGE, ChatActionType}
-from "./actionTypes";
+import {
+    ADD_MESSAGE,
+    CANCEL_EDIT_MESSAGE,
+    ChatActionType,
+    DELETE_MESSAGE,
+    LIKE_MESSAGE,
+    LOAD_MESSAGES,
+    OPEN_EDIT_MESSAGE,
+    UPDATE_MESSAGE
+} from "./actionTypes";
 
 import currentUserConfig from '../../shared/config/currentUserConfig.json'
 import {ChatState} from "../../types";
+import _ from "lodash";
 
 const initialState: ChatState = {
-    messages: []
+    messages: [],
+    editMessage: undefined
 };
 
 export default function(state = initialState, action: ChatActionType): ChatState {
+    console.log(action);
     switch (action.type) {
         case ADD_MESSAGE: {
             const { id, message } = action.payload;
@@ -34,9 +45,11 @@ export default function(state = initialState, action: ChatActionType): ChatState
             const updatedPos = messages.findIndex(m => m.id === message.id);
             messages[updatedPos].text = message.text;
             messages[updatedPos].editedAt = Date.now().toString();
+            console.log(messages[updatedPos]);
             return {
                 ...state,
-                messages
+                messages: _.cloneDeep(messages),
+                editMessage: undefined
             }
 
         }
@@ -61,11 +74,25 @@ export default function(state = initialState, action: ChatActionType): ChatState
             const updatedPos = messages.findIndex(m => m.id === id);
             const message = messages[updatedPos], likesNum = message.likeCount;
             message.isLike = !message.isLike;
-            message.likeCount = likesNum == undefined ? 0 : likesNum;
+            message.likeCount = likesNum === undefined ? 0 : likesNum;
             message.likeCount += message.isLike ? 1 : -1;
+            console.log(messages);
             return {
                 ...state,
-                messages
+                messages: _.cloneDeep(messages)
+            }
+        }
+        case OPEN_EDIT_MESSAGE: {
+            return {
+                ...state,
+                editMessage: action.payload
+            }
+        }
+
+        case CANCEL_EDIT_MESSAGE: {
+            return {
+                ...state,
+                editMessage: undefined
             }
         }
 

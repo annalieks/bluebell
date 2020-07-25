@@ -1,48 +1,86 @@
 import React, {MutableRefObject, useEffect, useRef, useState} from 'react'
 
 import styles from './styles.module.scss'
-import {EditModalState} from '../../types';
-import * as actions from './actions'
 import {connect} from 'react-redux';
+import { ChatState } from "../../types";
+import {Button, Form, Header, Icon, Modal, TextArea} from "semantic-ui-react";
+import {cancelEditMessage, openEditMessage, updateMessage} from "../Chat/actions";
 
 const EditModal = (props: any) => {
+    const { editMessage, updateMessage, cancelEditMessage } = props;
     const [body, setBody] = useState('');
-    const textInput = useRef() as MutableRefObject<HTMLTextAreaElement>;
+    const inputRef = useRef() as MutableRefObject<TextArea>;
 
     const focus = () => {
-        textInput.current.focus();
+        inputRef?.current?.focus();
     }
 
-    useEffect =(() => {
-        props.edit
-    });
+    useEffect(() => {
+        focus();
+    })
 
+    const handleCancel = () => {
+        cancelEditMessage();
+        setBody('');
+    }
+
+    const handleEdit = () => {
+        updateMessage({
+            id: editMessage.id,
+            text: body,
+            editedAt: Date.now().toString()
+        })
+        setBody('');
+    }
     const getView = () => (
-        props.id
+        editMessage != null
+        ? <Modal
+                basic size='small'
+                dimmer={'blurring'}
+                open>
+            <Header content='Edit message' />
+                <Modal.Content>
+                <Form>
+                    <TextArea
+                        value={body || editMessage?.text}
+                        className={styles.textArea}
+                        ref={inputRef}
+                        onChange={(e,{value}) => setBody(value as string)}
+                    />
+                </Form>
+                </Modal.Content>
+            <Modal.Actions>
+                <Button
+                    basic
+                    color='red'
+                    inverted
+                    onClick={handleCancel}>
+                <Icon name='remove'/>Cancel
+                </Button>
+                <Button
+                    color='green'
+                    inverted
+                    onClick={handleEdit}>
+                <Icon name='checkmark'/>Edit
+                </Button>
+           </Modal.Actions>
+         </Modal>
+        : null
     )
 
-    return (
-      <div className={styles.modalWrapper}>
-          <div className={styles.modalHeader} />
-          <textarea
-             className={styles.modalText}
-             value={body}
-             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>): void =>
-                 setBody(e.target.value)}
-          />
-      </div>
-    );
+    return getView();
 }
 
-const mapStateToProps = (state: { edit: EditModalState }) => {
+const mapStateToProps = (state: { chat: ChatState }) => {
     return {
-        id: state.edit.id,
-        text: state.edit.text
-    }
+        editMessage: state.chat.editMessage
+    };
 }
 
 const mapDispatchToProps = {
-    ...actions
+    updateMessage,
+    openEditMessage,
+    cancelEditMessage
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditModal);

@@ -5,9 +5,9 @@
 	flex-direction: row;
 	justify-content: space-between;
 	height: 40px;
-	top: 0px;
-	left: 0px;
-	right: 0px;
+	top: 0;
+	left: 0;
+	right: 0;
 	margin-top: 50px;
 	margin-right: $chatMargin;
 	margin-left: $chatMargin;
@@ -38,8 +38,8 @@
 @media all and (max-width: 380px) {
 	.chatHeader {
 		width: 100%;
-		margin-left: 0px;
-		margin-right: 0px;
+		margin-left: 0;
+		margin-right: 0;
 		padding-top: 8px;
 		font-size: 12px;
 	}
@@ -55,8 +55,8 @@
 @media all and (max-width: 590px) {
 	.chatHeader {
 		width: 100%;
-		margin-left: 0px;
-		margin-right: 0px;
+		margin-left: 0;
+		margin-right: 0;
 		font-size: 14px;
 	}
 }

@@ -1,25 +1,23 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Icon, Image } from 'semantic-ui-react';
-import { IMessageData, IUpdateMessage } from '../../types';
+import currentUserConfig from '../../shared/config/currentUserConfig.json'
 import styles from './styles.module.scss';
+import {IMessageData} from "../../types";
 
-interface IProps {
- message: IMessageData;
- updateMessage: (message: IUpdateMessage) => void;
- deleteMessage: (messageId: string) => void;
- likeMessage: (messageId: string) => void;
- userId: string;
+type Props = {
+    message: IMessageData,
+    delete: (id: string) => void;
+    like: (id: string) => void;
+    edit: (message: IMessageData) => void;
 }
 
-const Message = ({
-  message, updateMessage, deleteMessage, likeMessage, userId
-}: IProps) => {
-  const isOwnMessage: boolean = message.userId === userId;
+const Message = (props: Props) => {
+    const { message, delete: delete_, like, edit } = props;
+  const isOwnMessage: boolean = message.userId === currentUserConfig.userId;
 
   const handleLikeMessage = () => {
-    likeMessage(message.id);
+    like(message.id);
   };
 
   const getIcons = () => (isOwnMessage
@@ -27,14 +25,11 @@ const Message = ({
           <>
               <Icon
                   name="edit"
-                  onClick={() => {
-                  }}
+                  onClick={() => edit(message)}
               />
               <Icon
                   name="delete"
-                  onClick={() => {
-                    deleteMessage(message.id);
-                  }}
+                  onClick={() => delete_(message.id)}
               />
           </>
       : <Icon
@@ -79,14 +74,6 @@ const Message = ({
       </div>
     </div>
   );
-};
-
-Message.propTypes = {
-  message: PropTypes.objectOf(PropTypes.any).isRequired,
-  updateMessage: PropTypes.func.isRequired,
-  deleteMessage: PropTypes.func.isRequired,
-  likeMessage: PropTypes.func.isRequired,
-  userId: PropTypes.string.isRequired,
 };
 
 export default Message;
