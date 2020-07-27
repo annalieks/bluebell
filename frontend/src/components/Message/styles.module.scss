@@ -1,0 +1,129 @@
+:global(#root) {
+	.message {
+		display: grid;
+		grid-template-columns: 70%;
+		margin-bottom: 5px;
+	}
+
+	.messageText .text {
+		padding: 10px 14px;
+		font-size: 1rem;
+		margin-bottom: 5px;
+	}
+
+	.messageMeta {
+		font-size: 0.8rem;
+		color: #777;
+		display: flex;
+		flex-direction: row;
+		margin-top: -5px;
+		margin-left: 5px;
+	}
+
+	.messageMeta > div {
+		padding-right: 10px;
+	}
+
+	.ownMessage .messageText .text {
+		background: #0048AB;
+		color: #eee;
+		border: 1px solid #0048AA;
+		border-radius: 14px 14px 0 14px;
+		grid-column: 2 / 3;
+		white-space: pre-line;
+		word-break: break-word;
+		display: inline-block;
+	}
+
+	.ownMessage .messageText .author {
+		text-align: end;
+		padding-right: 3px;
+	}
+
+	.othersMessage .messageText .text {
+		background: #E6F4F1;
+		color: #111;
+		border: 1px solid #e2f0ed;
+		border-radius: 0 14px 14px 14px;
+		white-space: pre-line;
+		word-break: break-word;
+		display: inline-block;
+	}
+
+	.ownMessage {
+		justify-content: end;
+		justify-items: end;
+	}
+
+	.othersMessage {
+		justify-items: start;
+	}
+
+	.messageContent {
+		display: grid;
+	}
+
+	.ownMessage .messageContent {
+		grid-template-columns: auto auto;
+		justify-items: flex-end;
+	}
+
+	.othersMessage .messageContent {
+		grid-template-columns: 35px 1fr;
+	}
+
+	.message .messageAvatar {
+		grid-row: span 2;
+	}
+
+	.othersMessage .icons {
+		grid-column: 3 / 4;
+		align-self: center;
+	}
+
+	.ownMessage .icons {
+		grid-area: 1 / 1 / 2 / 2;
+		align-self: center;
+	}
+
+	.ownMessage .messageMeta {
+		grid-column: 1 / 3;
+		display: flex;
+		flex-direction: row-reverse;
+	}
+
+	.othersMessage .icons > * {
+		margin-left: 5px;
+	}
+
+	.ownMessage .icons > * {
+		margin-right: 5px;
+	}
+
+	.icons {
+		padding-top: 14px;
+	}
+
+	.icons > * {
+		opacity: 0;
+		color: grey;
+	}
+
+	.message:hover .icons > * {
+		opacity: 1;
+	}
+
+	.icons > *:hover {
+		color: #1C8ADB;
+	}
+
+	.icons .heart:hover,
+	.icons .redHeart,
+	.icons .redHeart:hover{
+		color: red;
+	}
+
+	.icons .redHeart {
+		opacity: 1;
+	}
+}

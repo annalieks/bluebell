@@ -1,0 +1,15 @@
+[
+    {
+        "label": "Username",
+        "type": "text",
+        "keyword": "name"
+    }, {
+        "label": "Email",
+        "type": "email",
+        "keyword": "email"
+    }, {
+        "label": "Password",
+        "type": "password",
+        "keyword": "password"
+    }
+]
