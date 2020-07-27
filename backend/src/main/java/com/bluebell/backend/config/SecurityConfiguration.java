@@ -1,6 +1,6 @@
-package com.threadjava.config;
+package com.bluebell.backend.config;
 
-import com.threadjava.users.UsersService;
+import com.bluebell.backend.users.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,8 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import static com.threadjava.config.SecurityConstants.ROUTES_WHITE_LIST;
 
 
 @EnableWebSecurity
@@ -21,8 +19,6 @@ import static com.threadjava.config.SecurityConstants.ROUTES_WHITE_LIST;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private UsersService myUserDetailsService;
-    @Autowired
-    private JwtRequestFilter jwtRequestFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -30,12 +26,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .cors().and()
             .csrf().disable()
             .authorizeRequests()
-            .antMatchers(ROUTES_WHITE_LIST)
+            .antMatchers("/login", "/register", "/h2-console/**")
             .permitAll()
             .anyRequest().authenticated().and()
-            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        http.headers().frameOptions().disable();
     }
 
     @Override

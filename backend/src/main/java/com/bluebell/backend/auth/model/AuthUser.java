@@ -1,4 +1,4 @@
-package com.threadjava.auth.model;
+package com.bluebell.backend.auth.model;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -14,10 +14,7 @@ public class AuthUser extends User {
         this.id = id;
     }
 
-    public AuthUser(UUID id, String username) {
-        super(username, null, emptyList());
-        this.id = id;
-    }
-
-    @Getter @Setter private UUID id;
+    @Getter
+    @Setter
+    private UUID id;
 }

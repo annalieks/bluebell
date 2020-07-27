@@ -1,17 +1,19 @@
-package com.threadjava.auth;
+package com.bluebell.backend.auth;
 
-import com.threadjava.auth.dto.*;
-import com.threadjava.users.UsersService;
+import com.bluebell.backend.auth.dto.AuthUserDTO;
+import com.bluebell.backend.auth.dto.UserLoginDTO;
+import com.bluebell.backend.auth.dto.UserRegisterDto;
+import com.bluebell.backend.users.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/auth")
 public class AuthController {
     @Autowired
     private AuthService authService;
-    @Autowired
-    private UsersService userDetailsService;
 
     @PostMapping("/register")
     public AuthUserDTO signUp(@RequestBody UserRegisterDto user) throws Exception {

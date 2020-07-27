@@ -1,4 +1,4 @@
-package com.threadjava.auth.dto;
+package com.bluebell.backend.auth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class UserLoginDTO{
-    private String email;
+    private String username;
     private String password;
 }

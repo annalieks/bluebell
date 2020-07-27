@@ -1,7 +1,8 @@
-package com.bluebell.backend.users.modal;
+package com.bluebell.backend.users;
 
-import com.threadjava.auth.model.AuthUser;
-import com.threadjava.users.dto.UserDetailsDto;
+import com.bluebell.backend.auth.model.AuthUser;
+import com.bluebell.backend.users.dto.UserDto;
+import com.bluebell.backend.users.modal.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,17 +16,20 @@ public class UsersService implements UserDetailsService {
     private UsersRepository usersRepository;
 
     @Override
-    public AuthUser loadUserByUsername(String email) throws UsernameNotFoundException {
+    public AuthUser loadUserByUsername(String username) throws UsernameNotFoundException {
         return usersRepository
-                .findByEmail(email)
+                .findByUsername(username)
                 .map(user -> new AuthUser(user.getId(), user.getEmail(), user.getPassword()))
-                .orElseThrow(() -> new UsernameNotFoundException(email));
+                .orElseThrow(() -> new UsernameNotFoundException(username));
     }
 
-    public UserDetailsDto getUserById(UUID id) {
-        return usersRepository
-                .findById(id)
-                .map(user -> UserMapper.MAPPER.userToUserDetailsDto(user))
+    public String getRole(String username) {
+        return username.equals("admin") ? "admin" : "default";
+    }
+
+    public UserDto findById(UUID id) {
+        return usersRepository.findById(id)
+                .map(UserMapper.MAPPER::userToUserDto)
                 .orElseThrow(() -> new UsernameNotFoundException("No user found with username"));
     }
 

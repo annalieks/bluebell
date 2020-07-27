@@ -1,7 +1,7 @@
-package com.threadjava.auth;
+package com.bluebell.backend.auth;
 
-import com.threadjava.auth.dto.UserRegisterDto;
-import com.threadjava.users.model.User;
+import com.bluebell.backend.auth.dto.UserRegisterDto;
+import com.bluebell.backend.users.modal.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -11,8 +11,5 @@ public interface AuthUserMapper {
     AuthUserMapper MAPPER = Mappers.getMapper(AuthUserMapper.class);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(target = "avatar", ignore = true)
     User userRegisterDtoToUser(UserRegisterDto userDto);
 }

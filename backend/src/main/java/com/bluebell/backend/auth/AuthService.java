@@ -1,11 +1,12 @@
-package com.threadjava.auth;
+package com.bluebell.backend.auth;
 
-import com.threadjava.auth.dto.UserRegisterDto;
-import com.threadjava.auth.model.AuthUser;
-import com.threadjava.auth.dto.AuthUserDTO;
-import com.threadjava.auth.dto.UserLoginDTO;
-import com.threadjava.users.model.User;
-import com.threadjava.users.UsersService;
+import com.bluebell.backend.auth.dto.AuthUserDTO;
+import com.bluebell.backend.auth.dto.UserLoginDTO;
+import com.bluebell.backend.auth.dto.UserRegisterDto;
+import com.bluebell.backend.auth.model.AuthUser;
+import com.bluebell.backend.users.UsersService;
+import com.bluebell.backend.users.dto.UserDto;
+import com.bluebell.backend.users.modal.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,18 +17,19 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
+
     @Autowired
     private PasswordEncoder bCryptPasswordEncoder;
+
     @Autowired
     private AuthenticationManager authenticationManager;
-    @Autowired
-    private TokenService tokenService;
+
     @Autowired
     private UsersService userDetailsService;
 
     public AuthUserDTO register(UserRegisterDto userDto) throws Exception {
         User user = AuthUserMapper.MAPPER.userRegisterDtoToUser(userDto);
-        var loginDTO = new UserLoginDTO(user.getEmail(), user.getPassword());
+        var loginDTO = new UserLoginDTO(user.getUsername(), user.getPassword());
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userDetailsService.save(user);
         return login(loginDTO);
@@ -36,15 +38,15 @@ public class AuthService {
     public AuthUserDTO login(UserLoginDTO user) throws Exception {
         Authentication auth;
         try {
-            auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
+            auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
         }
         catch (BadCredentialsException e) {
             throw new Exception("Incorrect username or password", e);
         }
 
         var currentUser = (AuthUser)auth.getPrincipal();
-        final var userDetails = userDetailsService.getUserById(currentUser.getId());
-        final String jwt = tokenService.generateToken(currentUser);
-        return new AuthUserDTO(jwt, userDetails);
+        var userDto = userDetailsService.findById(currentUser.getId());
+        final var userRole = userDetailsService.getRole(userDto.getUsername());
+        return new AuthUserDTO(userDto, userRole, true);
     }
 }
