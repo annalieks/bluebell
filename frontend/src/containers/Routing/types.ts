@@ -6,7 +6,6 @@ export type UserLoginData = {
 }
 
 export type AuthorizedUser = {
-    isAuthorized: boolean;
     user: User;
     role: string;
 }

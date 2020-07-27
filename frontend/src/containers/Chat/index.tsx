@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import _ from 'lodash';
+import {withRouter } from 'react-router-dom';
 import * as actions from './actions';
 import { MessageData, ChatState } from '../../types';
 import dataSourceConfig from '../../shared/config/dataSourceConfig.json';
@@ -84,4 +85,4 @@ const Chat = (props: Props) => {
   return getView();
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Chat);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Chat));

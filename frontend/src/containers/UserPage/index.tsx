@@ -44,9 +44,6 @@ class UserPage extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = UserPage.getDefaultUserData();
-    this.onCancel = this.onCancel.bind(this);
-    this.onSave = this.onSave.bind(this);
-    this.onChangeData = this.onChangeData.bind(this);
   }
 
   componentDidMount() {

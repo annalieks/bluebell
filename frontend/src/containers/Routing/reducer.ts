@@ -3,14 +3,17 @@ import { LOGIN_USER_ERROR, LOGIN_USER_SUCCESS, LoginUserType } from './actionTyp
 import { AuthorizedUser } from './types';
 
 const initialState = {
-  isLoading: true,
+  isAuthorized: false,
   user: {} as AuthorizedUser,
 };
 
 export default function (state = initialState, action: LoginUserType) {
   switch (action.type) {
     case LOGIN_USER_SUCCESS: {
-      return action.payload;
+      return {
+        user: action.payload,
+        isAuthorized: true,
+      };
     }
 
     default:

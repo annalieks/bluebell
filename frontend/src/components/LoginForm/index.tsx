@@ -1,51 +1,54 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import validator from 'validator';
 import { Form, Button, Segment } from 'semantic-ui-react';
+import {AuthorizedUser, UserLoginData} from '../../containers/Routing/types';
+import { useHistory } from 'react-router-dom';
 
-const LoginForm = ({ login }: any) => {
-  const [email, setEmail] = useState('');
+type Props = {
+  login: (user: UserLoginData) => void;
+  user: AuthorizedUser;
+}
+
+const LoginForm = ({ login, user }: Props) => {
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isEmailValid, setIsEmailValid] = useState(true);
-  const [isPasswordValid, setIsPasswordValid] = useState(true);
+  const history = useHistory();
 
-  const emailChanged = (data: any) => {
-    setEmail(data);
-    setIsEmailValid(true);
+  const usernameChanged = (data: string) => {
+    setUsername(data);
   };
 
-  const passwordChanged = (data: any) => {
+  const passwordChanged = (data: string) => {
     setPassword(data);
-    setIsPasswordValid(true);
   };
 
   const handleLoginClick = async () => {
-    const isValid = isEmailValid && isPasswordValid;
-    if (!isValid || isLoading) {
-      return;
-    }
     setIsLoading(true);
     try {
-      await login({ email, password });
+      login({ username, password });
     } catch {
-      // TODO: show error
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    console.log(user?.role, 'form');
+    if (user.role === 'admin') {
+      history.push('/users');
+    } else if (user.role === 'default') {
+      history.push('/chat');
+    }
+  }, [user, history]);
 
   return (
     <Form name="loginForm" size="large" onSubmit={handleLoginClick}>
       <Segment>
         <Form.Input
           fluid
-          icon="at"
           iconPosition="left"
-          placeholder="Email"
-          type="email"
-          error={!isEmailValid}
-          onChange={(ev) => emailChanged(ev.target.value)}
-          onBlur={() => setIsEmailValid(validator.isEmail(email))}
+          placeholder="Username"
+          onChange={(ev) => usernameChanged(ev.target.value)}
         />
         <Form.Input
           fluid
@@ -53,9 +56,7 @@ const LoginForm = ({ login }: any) => {
           iconPosition="left"
           placeholder="Password"
           type="password"
-          error={!isPasswordValid}
           onChange={(ev) => passwordChanged(ev.target.value)}
-          onBlur={() => setIsPasswordValid(Boolean(password))}
         />
         <Button type="submit" color="teal" fluid size="large" loading={isLoading} primary>
           Login
@@ -63,7 +64,7 @@ const LoginForm = ({ login }: any) => {
       </Segment>
     </Form>
   );
-};
+} ;
 
 LoginForm.propTypes = {
   login: PropTypes.func.isRequired,

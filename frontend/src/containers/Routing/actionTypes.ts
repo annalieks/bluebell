@@ -11,10 +11,7 @@ export interface LoginUserAction {
 
 interface LoginSuccessUserAction {
     type: typeof LOGIN_USER_SUCCESS;
-    payload: {
-        userData: AuthorizedUser,
-        isLoading: boolean;
-    };
+    payload: AuthorizedUser;
 }
 
-export type LoginUserType = LoginUserAction | LoginSuccessUserAction;
+export type LoginUserType = LoginSuccessUserAction;

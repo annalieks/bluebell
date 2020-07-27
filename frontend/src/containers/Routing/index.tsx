@@ -1,46 +1,52 @@
-import React, { useEffect } from 'react';
-import { Route, Switch, RouteComponentProps } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import React, {useEffect} from 'react';
+import { Redirect, Route, Switch, withRouter, useHistory } from 'react-router-dom';
+import { connect } from 'react-redux';
 import App from '../../App';
 import { AuthorizedUser } from './types';
-import { loginUser } from './actions';
-import PublicRoute from '../PublicRoute';
 import LoginPage from '../../components/LoginPage';
-import PrivateRoute from '../PrivateRoute';
 import Users from '../Users';
 import UserPage from '../UserPage';
 import NotFound from '../../scenes/NotFound';
+import AppHeader from '../../components/AppHeader';
 
-const mapStateToProps = (state: { login: {isLoading: boolean, user: AuthorizedUser} }) => ({
+const mapStateToProps = (state: { login: {isAuthorized: boolean, user: AuthorizedUser} }) => ({
   user: state.login.user,
+  isAuthorized: state.login.isAuthorized,
 });
 
-const mapDispatchToProps = {
-  loginUser,
-};
-
-type Props = ReturnType<typeof mapStateToProps> &
-    typeof mapDispatchToProps & RouteComponentProps
+type Props = ReturnType<typeof mapStateToProps>
 
 const Routing = ({
   user,
-}: Props) => (
-  <div>
-    <main>
+  isAuthorized,
+}: Props) => {
+  const history = useHistory();
+
+  useEffect(() => {
+    if (!isAuthorized) {
+      history.push('/login');
+    }
+  }, [history, isAuthorized]);
+  return (
+    <>
+      <AppHeader />
       <Switch>
-        <PublicRoute exact path="/login" component={LoginPage} />
+        <Route exact path="/login" component={LoginPage} />
         {
-                user.role === 'admin'
-                && <PrivateRoute exact path="/users" component={Users} />
-                && <PrivateRoute exact path="/users/:id" component={UserPage} />
-              }
-        <PrivateRoute exact path="/chat" component={App} />
+              user.role === 'admin'
+              && (
+              <Route exact path="/users" component={Users} />
+              )
+              && (
+              <Route exact path="/users/:id" component={UserPage} />
+              )
+        }
+        <Route exact path="/chat" component={App} />
         {/* <PrivateRoute exact path="/chat/:id" component={MessagePage} /> */}
         <Route path="*" exact component={NotFound} />
       </Switch>
-    </main>
-  </div>
+    </>
+  );
+};
 
-);
-
-export default Routing;
+export default withRouter(connect(mapStateToProps)(Routing));

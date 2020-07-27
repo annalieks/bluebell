@@ -1,13 +1,13 @@
 import React from 'react';
-import AppHeader from './components/AppHeader';
-import Chat from './containers/Chat';
+import { withRouter } from 'react-router-dom';
+import Routing from './containers/Routing';
 
 function App() {
   return (
-    <div>
-        <Routing></Routing>
-    </div>
+    <>
+      <Routing />
+    </>
   );
 }
 
-export default App;
+export default withRouter(App);

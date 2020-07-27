@@ -1,16 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { RouteComponentProps } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import UserItem from './UserItem';
 import * as actions from './actions';
 import { User } from '../../types';
-
-type OwnProps = {
-  onEdit: (id: string) => void;
-  onDelete: (id: string) => void;
-  onAdd: () => void;
-}
 
 const mapStateToProps = (state: User[]) => ({
   users: state,
@@ -20,10 +13,12 @@ const mapDispatchToProps = {
   ...actions,
 };
 
-type Props = RouteComponentProps & ReturnType<typeof mapStateToProps> &
-    typeof mapDispatchToProps & OwnProps
+type Props = ReturnType<typeof mapStateToProps> &
+    typeof mapDispatchToProps
 
 class UserList extends Component<Props, {}> {
+  public history = useHistory();
+
   constructor(props: Props) {
     super(props);
     this.onEdit = this.onEdit.bind(this);
@@ -37,8 +32,7 @@ class UserList extends Component<Props, {}> {
   }
 
   onEdit(id: string) {
-    const { history } = this.props;
-    history.push(`/user/${id}`);
+    this.history.push(`/user/${id}`);
   }
 
   onDelete(id: string) {
@@ -47,8 +41,7 @@ class UserList extends Component<Props, {}> {
   }
 
   onAdd() {
-    const { history } = this.props;
-    history.push('/user');
+    this.history.push('/user');
   }
 
   render() {
