@@ -47,6 +47,6 @@ public class AuthService {
         var currentUser = (AuthUser)auth.getPrincipal();
         var userDto = userDetailsService.findById(currentUser.getId());
         final var userRole = userDetailsService.getRole(userDto.getUsername());
-        return new AuthUserDTO(userDto, userRole, true);
+        return new AuthUserDTO(userDto, userRole);
     }
 }

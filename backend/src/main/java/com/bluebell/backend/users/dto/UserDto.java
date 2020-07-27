@@ -9,4 +9,5 @@ public class UserDto {
     UUID id;
     String username;
     String email;
+    String avatar;
 }

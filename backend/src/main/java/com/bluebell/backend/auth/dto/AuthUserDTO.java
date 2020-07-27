@@ -9,5 +9,4 @@ import lombok.Data;
 public class AuthUserDTO {
     UserDto user;
     String role;
-    boolean isAuthorized;
 }

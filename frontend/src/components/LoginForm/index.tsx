@@ -13,7 +13,6 @@ const LoginForm = ({ login, user }: Props) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const history = useHistory();
 
   const usernameChanged = (data: string) => {
     setUsername(data);
@@ -31,15 +30,6 @@ const LoginForm = ({ login, user }: Props) => {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    console.log(user?.role, 'form');
-    if (user.role === 'admin') {
-      history.push('/users');
-    } else if (user.role === 'default') {
-      history.push('/chat');
-    }
-  }, [user, history]);
 
   return (
     <Form name="loginForm" size="large" onSubmit={handleLoginClick}>
