@@ -26,7 +26,6 @@ export type User = {
  username: string;
  email: string;
  avatar: string;
- role: string;
 }
 
 export type UserProfileData = {

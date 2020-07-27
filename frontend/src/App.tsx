@@ -5,8 +5,7 @@ import Chat from './containers/Chat';
 function App() {
   return (
     <div>
-      <AppHeader />
-      <Chat />
+        <Routing></Routing>
     </div>
   );
 }
