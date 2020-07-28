@@ -2,8 +2,9 @@ import React, { ChangeEvent } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { RouteComponentProps } from 'react-router-dom';
+import { Segment } from 'semantic-ui-react';
 import * as actions from './actions';
-import { addUser, updateUser } from '../Users/actions';
+import { addUser, updateUser } from '../UserList/actions';
 import TextInput from '../../shared/inputs/text/TextInput';
 import PasswordInput from '../../shared/inputs/password/PasswordInput';
 import EmailInput from '../../shared/inputs/email/EmailInput';
@@ -20,8 +21,8 @@ interface RouteInfo {
 interface ComponentProps extends RouteComponentProps<RouteInfo> {
 }
 
-const mapStateToProps = (state: {userPage: {user: User}}) => ({
-  userData: state.userPage.user,
+const mapStateToProps = (state: {user: {user: User}}) => ({
+  userData: state.user.user,
 });
 
 const mapDispatchToProps = {
@@ -44,6 +45,9 @@ class UserPage extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = UserPage.getDefaultUserData();
+    this.onCancel = this.onCancel.bind(this);
+    this.onSave = this.onSave.bind(this);
+    this.onChangeData = this.onChangeData.bind(this);
   }
 
   componentDidMount() {
@@ -54,7 +58,8 @@ class UserPage extends React.Component<Props, State> {
   }
 
   static getDerivedStateFromProps(nextProps: Props, prevState: Props) {
-    if (nextProps.userData.id !== prevState.userData.id && nextProps.match.params.id) {
+    console.log(nextProps, 'next ', prevState, 'prev');
+    if (nextProps.userData?.id !== prevState.userData?.id && nextProps.match.params?.id) {
       return {
         ...nextProps.userData,
       };
@@ -65,7 +70,7 @@ class UserPage extends React.Component<Props, State> {
   onCancel() {
     const { history } = this.props;
     this.setState(UserPage.getDefaultUserData());
-    history.push('/');
+    history.push('/users');
   }
 
   onSave() {
@@ -74,10 +79,15 @@ class UserPage extends React.Component<Props, State> {
     if (state.id) {
       update(state.id, state);
     } else {
-      add(state);
+      const { username, email, password } = this.state;
+      add({
+        username,
+        email,
+        password,
+      });
     }
     this.setState(UserPage.getDefaultUserData());
-    history.push('/');
+    history.push('/users');
   }
 
   onChangeData(e: React.ChangeEvent<HTMLInputElement>, keyword: string) {
@@ -137,27 +147,29 @@ class UserPage extends React.Component<Props, State> {
     const data = this.state;
 
     return (
-      <div className="modal" style={{ display: 'block' }} tabIndex={-1} role="dialog">
-        <div className="modal-dialog" role="document">
-          <div className="modal-content" style={{ padding: '5px' }}>
-            <div className="modal-header">
-              <h5 className="modal-title">Add user</h5>
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.onCancel}>
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              {
+      <Segment>
+        <div className="modal" style={{ display: 'block' }} tabIndex={-1} role="dialog">
+          <div className="modal-dialog" role="document">
+            <div className="modal-content" style={{ padding: '5px' }}>
+              <div className="modal-header">
+                <h5 className="modal-title">Add user</h5>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.onCancel}>
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                {
                   userFormConfig.map((item, index) => this.getInput(data, item, index))
               }
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" onClick={this.onCancel}>Cancel</button>
-              <button type="button" className="btn btn-primary" onClick={this.onSave}>Save</button>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" onClick={this.onCancel}>Cancel</button>
+                <button type="button" className="btn btn-primary" onClick={this.onSave}>Save</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </Segment>
     );
   }
 }

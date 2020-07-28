@@ -2,7 +2,7 @@
     {
         "label": "Username",
         "type": "text",
-        "keyword": "name"
+        "keyword": "username"
     }, {
         "label": "Email",
         "type": "email",

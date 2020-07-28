@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { useHistory, withRouter, RouteComponentProps } from 'react-router-dom';
+import { Button, List, Segment } from 'semantic-ui-react';
 import UserItem from './UserItem';
 import * as actions from './actions';
 import { User } from '../../types';
-import Spinner from "../../components/Spinner";
+import Spinner from '../../components/Spinner';
 
 import styles from './styles.module.scss';
 
@@ -30,7 +31,6 @@ class UserList extends Component<Props, {}> {
 
   componentDidMount() {
     const { fetchUsers } = this.props;
-    console.log('Fetching');
     fetchUsers();
   }
 
@@ -53,8 +53,17 @@ class UserList extends Component<Props, {}> {
       return <Spinner />;
     }
     return (
-      <div className={styles.row}>
-        <div className="list-group col-10">
+      <Segment className={styles.usersList}>
+        <div>
+          <Button
+            type="button"
+            className="btn btn-success"
+            onClick={this.onAdd}
+          >
+            Add user
+          </Button>
+        </div>
+        <List divided inverted relaxed>
           {
            users.map((user) => (
              <UserItem
@@ -67,18 +76,8 @@ class UserList extends Component<Props, {}> {
              />
            ))
           }
-        </div>
-        <div className="col-2">
-          <button
-            type="button"
-            className="btn btn-success"
-            onClick={this.onAdd}
-            style={{ margin: '5px' }}
-          >
-            Add user
-          </button>
-        </div>
-      </div>
+        </List>
+      </Segment>
     );
   }
 }

@@ -1,5 +1,6 @@
 package com.bluebell.backend.users.modal;
 
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,12 +24,14 @@ public class User {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
+    @NotNull
     @Column(name="username")
     private String username;
 
     @Column(name="email")
     private String email;
 
+    @NotNull
     @Column(name="password")
     private String password;
 

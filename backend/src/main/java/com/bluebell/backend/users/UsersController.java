@@ -18,9 +18,9 @@ public class UsersController {
     UsersService usersService;
 
     //TODO:
-    @GetMapping("/users/{id}")
-    public Optional<UserDto> getUser(@PathVariable UUID id) {
-        return Optional.empty();
+    @GetMapping("/user/{id}")
+    public UserDto getUser(@PathVariable UUID id) {
+        return usersService.findById(id);
     }
 
     @GetMapping("/users")
@@ -30,7 +30,7 @@ public class UsersController {
 
     @PostMapping("/user")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void addUser(@RequestBody UserDto userDto) {
+    public void addUser(@RequestBody UpdateUserDto userDto) {
         usersService.addUser(userDto);
     }
 

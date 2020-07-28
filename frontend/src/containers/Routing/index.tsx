@@ -6,13 +6,13 @@ import { connect } from 'react-redux';
 import App from '../../App';
 import { AuthorizedUser } from './types';
 import LoginPage from '../../components/LoginPage';
-import UserPage from '../UserPage';
+import UserPage from '../UserEditor';
 import NotFound from '../../scenes/NotFound';
 import AppHeader from '../../components/AppHeader';
 import PrivateRoute from '../PrivateRoute';
 import PublicRoute from '../PublicRoute';
 import Chat from '../Chat';
-import UserList from '../Users';
+import UserList from '../UserList';
 
 const mapStateToProps = (state: { login: {isAuthorized: boolean, user: AuthorizedUser} }) => ({
   user: state.login.user,
@@ -41,8 +41,10 @@ const Routing = ({
         <PrivateRoute exact path="/users" component={UserList} />
         }
         { user.role === 'admin' &&
-        <PrivateRoute exact path="/users/:id" component={UserPage} />
+        <PrivateRoute exact path="/user/:id" component={UserPage} />
         }
+        {user.role === 'admin' &&
+        <PrivateRoute exact path="/user" component={UserPage} />}
 
         <PrivateRoute exact path="/chat" component={Chat} />
         {/* <PrivateRoute exact path="/chat/:id" component={MessagePage} /> */}

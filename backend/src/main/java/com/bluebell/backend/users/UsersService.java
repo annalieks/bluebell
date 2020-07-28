@@ -5,12 +5,13 @@ import com.bluebell.backend.users.dto.UpdateUserDto;
 import com.bluebell.backend.users.dto.UserDto;
 import com.bluebell.backend.users.modal.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -18,6 +19,10 @@ import java.util.stream.Collectors;
 public class UsersService implements UserDetailsService {
     @Autowired
     private UsersRepository usersRepository;
+
+    @Autowired
+    @Lazy
+    private PasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public AuthUser loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -45,9 +50,10 @@ public class UsersService implements UserDetailsService {
                 .collect(Collectors.toList());
     }
 
-    public void addUser(UserDto userDto) {
-        User user = UserMapper.MAPPER.userDtoToUser(userDto);
-        save(user);
+    public void addUser(UpdateUserDto userDto) {
+        User user = UserMapper.MAPPER.updateUserDtoToUser(userDto);
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        usersRepository.save(user);
     }
 
     public void updateUser(UUID id, UpdateUserDto updateUserDto) {

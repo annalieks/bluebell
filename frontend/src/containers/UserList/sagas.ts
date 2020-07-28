@@ -23,7 +23,7 @@ function* watchFetchUsers() {
 }
 
 export function* addUser(action: AddUserAction) {
-  const newUser = { ...action.payload.data, id: action.payload.id };
+  const newUser = { ...action.payload.data };
 
   try {
     yield call(axios.post, `${api.url}/user`, newUser);

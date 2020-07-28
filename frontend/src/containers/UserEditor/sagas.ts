@@ -10,7 +10,7 @@ import {
 export function* fetchUser(action: FetchUserAction) {
   try {
     const user = yield call(axios.get, `${api.url}/user/${action.payload.id}`);
-    yield put({ type: FETCH_USER_SUCCESS, payload: { user } });
+    yield put({ type: FETCH_USER_SUCCESS, payload: { user: user.data } });
   } catch (error) {
     yield put({ type: FETCH_USER_ERROR });
   }

@@ -1,5 +1,6 @@
 package com.bluebell.backend.users;
 
+import com.bluebell.backend.users.dto.UpdateUserDto;
 import com.bluebell.backend.users.dto.UserDto;
 import com.bluebell.backend.users.modal.User;
 import org.mapstruct.Mapper;
@@ -11,5 +12,5 @@ public interface UserMapper {
 
     UserDto userToUserDto(User user);
 
-    User userDtoToUser(UserDto userDto);
+    User updateUserDtoToUser(UpdateUserDto userDto);
 }
