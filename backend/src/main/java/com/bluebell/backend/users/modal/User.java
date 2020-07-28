@@ -42,4 +42,7 @@ public class User {
     @Column(name="avatar")
     private String avatar;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Message> messages;
+
 }
