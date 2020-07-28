@@ -27,6 +27,7 @@ class UserList extends Component<Props, {}> {
     this.onEdit = this.onEdit.bind(this);
     this.onDelete = this.onDelete.bind(this);
     this.onAdd = this.onAdd.bind(this);
+    this.onChat = this.onChat.bind(this);
   }
 
   componentDidMount() {
@@ -47,6 +48,10 @@ class UserList extends Component<Props, {}> {
     this.props.history.push('/user');
   }
 
+  onChat() {
+    this.props.history.push('/chat');
+  }
+
   render() {
     const { users, isLoading } = this.props;
     if (isLoading) {
@@ -54,13 +59,18 @@ class UserList extends Component<Props, {}> {
     }
     return (
       <Segment className={styles.usersList}>
-        <div>
+        <div className={styles.titleButtons}>
           <Button
             type="button"
-            className="btn btn-success"
             onClick={this.onAdd}
           >
             Add user
+          </Button>
+          <Button
+            type="button"
+            onClick={this.onChat}
+          >
+            Chat
           </Button>
         </div>
         <List divided inverted relaxed>

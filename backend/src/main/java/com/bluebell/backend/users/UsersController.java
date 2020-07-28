@@ -34,7 +34,7 @@ public class UsersController {
         usersService.addUser(userDto);
     }
 
-    @PostMapping("/user/{id}")
+    @PutMapping("/user/{id}")
     @ResponseStatus(code = HttpStatus.OK)
     public void updateUser(@PathVariable UUID id, @RequestBody UpdateUserDto updateUserDto) {
         usersService.updateUser(id, updateUserDto);

@@ -1,26 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { Icon, Image } from 'semantic-ui-react';
-import currentUserConfig from '../../shared/config/currentUserConfig.json';
+import { useHistory } from 'react-router-dom';
 import styles from './styles.module.scss';
 import { MessageData } from '../../types';
 
 type Props = {
     message: MessageData,
     delete: (id: string) => void;
-    like: (id: string) => void;
-    edit: (message: MessageData) => void;
+    like: (id: string, isLike: boolean) => void;
+    userId: string;
 }
 
 const Message = (props: Props) => {
   const {
-    message, delete: delete_, like, edit,
+    message, delete: delete_, like, userId,
   } = props;
-  const isOwnMessage: boolean = message.userId === currentUserConfig.userId;
+  const isOwnMessage: boolean = message.userId === userId;
+  const [isLike, setIsLike] = useState(false);
+  const history = useHistory();
 
   const handleLikeMessage = () => {
-    like(message.id);
+    like(message.id, !isLike);
+    setIsLike(!isLike);
   };
 
   const getIcons = () => (isOwnMessage
@@ -28,7 +31,7 @@ const Message = (props: Props) => {
       <>
         <Icon
           name="cog"
-          onClick={() => edit(message)}
+          onClick={() => history.push(`/chat/${message.id}`)}
         />
         <Icon
           name="delete"
@@ -39,7 +42,7 @@ const Message = (props: Props) => {
     : (
       <Icon
         name="heart"
-        className={message.isLike ? styles.redHeart : styles.heart}
+        className={isLike ? styles.redHeart : styles.heart}
         onClick={handleLikeMessage}
       />
     )
@@ -86,7 +89,6 @@ Message.propTypes = {
   message: PropTypes.objectOf(PropTypes.any).isRequired,
   delete: PropTypes.func.isRequired,
   like: PropTypes.func.isRequired,
-  edit: PropTypes.func.isRequired,
 };
 
 export default Message;

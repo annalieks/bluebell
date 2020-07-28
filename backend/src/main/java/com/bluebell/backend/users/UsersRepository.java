@@ -2,6 +2,7 @@ package com.bluebell.backend.users;
 
 import com.bluebell.backend.users.modal.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,8 @@ public interface UsersRepository extends JpaRepository<User, UUID> {
 
     List<User> findAll();
 
+    @Transactional
+    @Modifying
     @Query("UPDATE User u " +
             "SET u.username = :username," +
             "u.email = :email, " +

@@ -1,3 +1,5 @@
+import {AuthorizedUser} from "./containers/Routing/types";
+
 export type MessageData = {
  id: string;
  userId: string;
@@ -6,11 +8,11 @@ export type MessageData = {
  text: string;
  createdAt: string;
  editedAt: string;
- likeCount: number;
- isLike?: boolean;
+ likeCount: number
 }
 
 export type AddMessageData = {
+ userId: string;
  text: string;
  createdAt: string;
 }
@@ -36,5 +38,10 @@ export type UserProfileData = {
 
 export type ChatState = {
  messages: MessageData[];
- editingMessage: MessageData | undefined;
+ isLoading: boolean;
+}
+
+export type LoginState = {
+ isAuthorized: boolean;
+ user: AuthorizedUser;
 }

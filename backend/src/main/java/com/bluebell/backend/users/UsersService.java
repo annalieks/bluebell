@@ -60,7 +60,7 @@ public class UsersService implements UserDetailsService {
         usersRepository.updateUser(
                 updateUserDto.getUsername(),
                 updateUserDto.getEmail(),
-                updateUserDto.getPassword(),
+                bCryptPasswordEncoder.encode(updateUserDto.getPassword()),
                 id);
     }
     public void deleteUser(UUID id) {

@@ -14,4 +14,15 @@
     margin-right: 10px;
     margin-bottom: 8px;
   }
+
+  .titleButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+  }
+
+  .titleButtons button {
+    margin-right: 10px;
+  }
+
 }

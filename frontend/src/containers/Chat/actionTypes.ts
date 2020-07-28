@@ -1,52 +1,54 @@
 import { AddMessageData, MessageData, UpdateMessageData } from '../../types';
 
 export const ADD_MESSAGE = 'ADD_MESSAGE';
+export const ADD_MESSAGE_ERROR = 'ADD_MESSAGE_ERROR';
 export const UPDATE_MESSAGE = 'UPDATE_MESSAGE';
+export const UPDATE_MESSAGE_ERROR = 'UPDATE_MESSAGE_ERROR';
 export const DELETE_MESSAGE = 'DELETE_MESSAGE';
+export const DELETE_MESSAGE_ERROR = 'DELETE_MESSAGE_ERROR';
 export const LIKE_MESSAGE = 'LIKE_MESSAGE';
+export const LIKE_MESSAGE_ERROR = 'LIKE_MESSAGE_ERROR';
 export const LOAD_MESSAGES = 'LOAD_MESSAGES';
 export const OPEN_EDIT_MESSAGE = 'OPEN_EDIT_MESSAGE';
 export const CANCEL_EDIT_MESSAGE = 'CANCEL_EDIT_MESSAGE';
+export const LOAD_MESSAGES_ERROR = 'LOAD_MESSAGES_ERROR';
+export const LOAD_MESSAGES_SUCCESS = 'LOAD_MESSAGES_SUCCESS';
 
-interface AddMessageAction {
+export interface AddMessageAction {
     type: typeof ADD_MESSAGE,
-    payload: { id: string, message: AddMessageData }
+    payload: AddMessageData,
 }
 
-interface UpdateMessageAction {
+export interface UpdateMessageAction {
     type: typeof UPDATE_MESSAGE,
     payload: UpdateMessageData
 }
 
-interface DeleteMessageAction {
+export interface DeleteMessageAction {
     type: typeof DELETE_MESSAGE,
     payload: string
 }
 
-interface LikeMessageAction {
+export interface LikeMessageAction {
     type: typeof LIKE_MESSAGE,
-    payload: string
+    payload: {
+        id: string,
+        isLike: boolean
+    }
 }
 
-interface LoadMessagesAction {
+export interface LoadMessagesSuccessAction {
+    type: typeof LOAD_MESSAGES_SUCCESS,
+    payload: MessageData[],
+}
+
+export interface LoadMessagesErrorAction {
+    type: typeof LOAD_MESSAGES_ERROR
+}
+
+export interface LoadMessagesAction {
     type: typeof LOAD_MESSAGES,
-    payload: MessageData[]
 }
 
-interface OpenEditMessageAction {
-    type: typeof OPEN_EDIT_MESSAGE,
-    payload: MessageData
-}
-
-interface CancelEditMessageAction {
-    type: typeof CANCEL_EDIT_MESSAGE
-}
-
-export type ChatActionType =
-    AddMessageAction
-    | UpdateMessageAction
-    | DeleteMessageAction
-    | LikeMessageAction
-    | LoadMessagesAction
-    | OpenEditMessageAction
-    | CancelEditMessageAction;
+export type ChatActionType = LoadMessagesSuccessAction | LoadMessagesErrorAction | AddMessageAction
+    | UpdateMessageAction | DeleteMessageAction | LoadMessagesAction | LikeMessageAction;

@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import _ from 'lodash';
-import {withRouter } from 'react-router-dom';
+import { withRouter, useHistory } from 'react-router-dom';
 import * as actions from './actions';
-import { MessageData, ChatState } from '../../types';
-import dataSourceConfig from '../../shared/config/dataSourceConfig.json';
-import currentUserConfig from '../../shared/config/currentUserConfig.json';
+import { MessageData, ChatState, LoginState } from '../../types';
 
 import PageLoader from '../../components/PageLoader';
 import Header from '../../components/Header';
@@ -15,8 +12,10 @@ import MessageInput from '../../components/MessageInput';
 
 import styles from './styles.module.scss';
 
-const mapStateToProps = (state: { chat: ChatState }) => ({
+const mapStateToProps = (state: { chat: ChatState, login: LoginState }) => ({
   messages: state.chat.messages,
+  user: state.login.user,
+  isLoading: state.chat.isLoading,
 });
 
 const mapDispatchToProps = {
@@ -32,19 +31,20 @@ const Chat = (props: Props) => {
     addMessage: add,
     deleteMessage: delete_,
     likeMessage: like,
-    openEditMessage: edit,
     loadMessages: load,
+    user,
+    isLoading,
   } = props;
 
-  const [isLoading, setIsLoading] = useState(true);
+  const history = useHistory();
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
       const { key } = e;
       const message = _.findLast(messages,
-        (m: MessageData) => m.userId === currentUserConfig.userId);
+        (m: MessageData) => m.userId === user?.user.id);
       if (key === 'ArrowUp' && message) {
-        edit(message);
+        history.push(`/chat/${message.id}`);
       }
     };
     document.addEventListener('keydown', handleKeyPress);
@@ -52,18 +52,10 @@ const Chat = (props: Props) => {
     return () => {
       document.removeEventListener('keydown', handleKeyPress);
     };
-  }, [messages, edit]);
+  }, [messages]);
 
   useEffect(() => {
-    fetch(dataSourceConfig.url)
-      .then((response) => response.json())
-      .then((result) => {
-        const sortedMessages = result.sort(
-          (lhs: MessageData, rhs: MessageData) => moment(lhs.createdAt).diff(moment(rhs.createdAt)),
-        );
-        load(sortedMessages);
-        setIsLoading(false);
-      });
+    load();
   }, [load]);
 
   const getView = () => (isLoading
@@ -75,9 +67,9 @@ const Chat = (props: Props) => {
           messages={messages}
           delete={delete_}
           like={like}
-          edit={edit}
+          userId={user.user.id}
         />
-        <MessageInput add={add} />
+        <MessageInput add={add} userId={user.user.id} />
       </div>
     )
   );

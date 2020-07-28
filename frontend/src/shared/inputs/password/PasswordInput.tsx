@@ -18,10 +18,9 @@ const PasswordInput = ({
   const inputType = isShown ? 'text' : 'password';
 
   return (
-    <div className="form-group row">
-      <label className="col-sm-3 col-form-label">{ label }</label>
+    <div>
+      <label>{ label }</label>
       <input
-        className="col-sm-7"
         value={text}
         type={inputType}
         onChange={(e) => onChange(e, keyword)}

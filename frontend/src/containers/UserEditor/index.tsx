@@ -2,7 +2,7 @@ import React, { ChangeEvent } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { RouteComponentProps } from 'react-router-dom';
-import { Segment } from 'semantic-ui-react';
+import { Button, Segment } from 'semantic-ui-react';
 import * as actions from './actions';
 import { addUser, updateUser } from '../UserList/actions';
 import TextInput from '../../shared/inputs/text/TextInput';
@@ -11,6 +11,8 @@ import EmailInput from '../../shared/inputs/email/EmailInput';
 import { User } from '../../types';
 import userFormConfig from '../../shared/config/userFormConfig.json';
 import defaultUserConfig from '../../shared/config/defaultUserConfig.json';
+
+import styles from './styles.module.scss';
 
 const EMAIL = 'email';
 
@@ -57,9 +59,9 @@ class UserPage extends React.Component<Props, State> {
     }
   }
 
-  static getDerivedStateFromProps(nextProps: Props, prevState: Props) {
-    console.log(nextProps, 'next ', prevState, 'prev');
-    if (nextProps.userData?.id !== prevState.userData?.id && nextProps.match.params?.id) {
+  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
+    console.log(nextProps, prevState);
+    if (nextProps.userData.id !== prevState.id && nextProps.match.params.id) {
       return {
         ...nextProps.userData,
       };
@@ -147,27 +149,21 @@ class UserPage extends React.Component<Props, State> {
     const data = this.state;
 
     return (
-      <Segment>
-        <div className="modal" style={{ display: 'block' }} tabIndex={-1} role="dialog">
-          <div className="modal-dialog" role="document">
-            <div className="modal-content" style={{ padding: '5px' }}>
-              <div className="modal-header">
-                <h5 className="modal-title">Add user</h5>
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.onCancel}>
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                {
-                  userFormConfig.map((item, index) => this.getInput(data, item, index))
-              }
-              </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={this.onCancel}>Cancel</button>
-                <button type="button" className="btn btn-primary" onClick={this.onSave}>Save</button>
-              </div>
-            </div>
-          </div>
+      <Segment className={styles.editContainer}>
+        <div>
+          <h5>Add user</h5>
+          <Button type="button" aria-label="Close" onClick={this.onCancel}>
+            <span aria-hidden="true">&times;</span>
+          </Button>
+        </div>
+        <div className={styles.body}>
+          {
+               userFormConfig.map((item, index) => this.getInput(data, item, index))
+          }
+        </div>
+        <div>
+          <Button type="button" className="btn btn-secondary" onClick={this.onCancel}>Cancel</Button>
+          <Button type="button" className="btn btn-primary" onClick={this.onSave}>Save</Button>
         </div>
       </Segment>
     );

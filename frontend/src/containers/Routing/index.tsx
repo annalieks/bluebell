@@ -3,7 +3,6 @@ import {
   Redirect, Route, Switch, withRouter, useHistory,
 } from 'react-router-dom';
 import { connect } from 'react-redux';
-import App from '../../App';
 import { AuthorizedUser } from './types';
 import LoginPage from '../../components/LoginPage';
 import UserPage from '../UserEditor';
@@ -12,6 +11,7 @@ import AppHeader from '../../components/AppHeader';
 import PrivateRoute from '../PrivateRoute';
 import PublicRoute from '../PublicRoute';
 import Chat from '../Chat';
+import MessageEditor from '../MessageEditor'
 import UserList from '../UserList';
 
 const mapStateToProps = (state: { login: {isAuthorized: boolean, user: AuthorizedUser} }) => ({
@@ -47,7 +47,7 @@ const Routing = ({
         <PrivateRoute exact path="/user" component={UserPage} />}
 
         <PrivateRoute exact path="/chat" component={Chat} />
-        {/* <PrivateRoute exact path="/chat/:id" component={MessagePage} /> */}
+        <PrivateRoute exact path="/chat/:id" component={MessageEditor} />
         <Route path="*" exact component={NotFound} />
       </Switch>
     </>

@@ -6,9 +6,9 @@ import LoginForm from '../LoginForm';
 import { loginUser } from '../../containers/Routing/actions';
 
 import styles from './styles.module.scss';
-import { AuthorizedUser } from '../../containers/Routing/types';
+import { LoginState } from '../../types';
 
-const mapStateToProps = (state: { login: { isAuthorized: boolean, user: AuthorizedUser}}) => ({
+const mapStateToProps = (state: { login: LoginState}) => ({
   user: state.login.user,
 });
 

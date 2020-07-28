@@ -7,25 +7,24 @@ import TimeSeparator from '../TimeSeparator';
 import Message from '../Message';
 
 import styles from './styles.module.scss';
-import EditModal from '../EditModal';
+import EditModal from '../../containers/MessageEditor';
 
 type Props = {
     messages: MessageData[],
     delete: (id: string) => void;
-    like: (id: string) => void;
-    edit: (message: MessageData) => void;
+    like: (id: string, isLike: boolean) => void;
+    userId: string;
 }
 
 const MessageList = (props: Props) => {
   const {
-    messages, delete: delete_, like, edit,
+    messages, delete: delete_, like, userId,
   } = props;
 
   const groupedMessages = _.groupBy(messages, (message) => moment(message.createdAt).format('DD/MM/YY'));
 
   return (
     <div className={styles.messagesContainer}>
-      <EditModal />
       {
         Object.keys(groupedMessages).map((key) => (
           <React.Fragment key={key}>
@@ -38,7 +37,7 @@ const MessageList = (props: Props) => {
                   key={message.id}
                   delete={delete_}
                   like={like}
-                  edit={edit}
+                  userId={userId}
                 />
               ))
             }
@@ -54,7 +53,6 @@ MessageList.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.any).isRequired,
   delete: PropTypes.func.isRequired,
   like: PropTypes.func.isRequired,
-  edit: PropTypes.func.isRequired,
 };
 
 export default MessageList;

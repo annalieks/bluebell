@@ -29,12 +29,11 @@ const EmailInput = ({
   const inputClass = isValid ? 'col-sm-9' : 'error col-sm-9';
 
   return (
-    <div className="email-input form-group row">
-      <label className="col-sm-3 col-form-label">{ label }</label>
+    <div>
+      <label>{ label }</label>
       <input
         value={text}
         type={type}
-        className={inputClass}
         onChange={(e) => onChange(e, keyword)}
         onBlur={(e) => onBlur(e)}
       />

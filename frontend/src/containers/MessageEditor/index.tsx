@@ -8,45 +8,55 @@ import {
 } from 'semantic-ui-react';
 import _ from 'lodash';
 import moment from 'moment';
+import { useParams, useHistory, withRouter } from 'react-router-dom';
 import styles from './styles.module.scss';
-import { ChatState } from '../../types';
-import { cancelEditMessage, updateMessage } from '../../containers/Chat/actions';
+import { MessageData } from '../../types';
+import { loadMessage } from './actions';
+import { updateMessage } from '../Chat/actions';
 
-const mapStateToProps = (state: { chat: ChatState }) => ({
-  editingMessage: state.chat.editingMessage,
+const mapStateToProps = (state: { message: {message: MessageData} }) => ({
+  message: state.message.message,
 });
 
 const mapDispatchToProps = {
+  loadMessage,
   updateMessage,
-  cancelEditMessage,
 };
 
 type Props = ReturnType<typeof mapStateToProps> &
     typeof mapDispatchToProps
 
-const EditModal = (props: Props) => {
+const MessageEditor = (props: Props) => {
   const {
-    editingMessage: message,
+    message,
     updateMessage: update,
-    cancelEditMessage: cancel,
+    loadMessage: load,
   } = props;
   const [body, setBody] = useState('');
   const inputRef = useRef() as MutableRefObject<TextArea>;
+  const { id } = useParams();
+  const history = useHistory();
+
+  useEffect(() => {
+    console.log('loading');
+    load(id);
+  }, [load]);
 
   useEffect(() => {
     const focus = () => inputRef?.current?.focus();
-    if (message) setBody(message?.text);
+    console.log('message', message);
+    if (message) setBody(message.text);
     focus();
   }, [message, inputRef]);
 
   const handleCancel = () => {
-    cancel();
     setBody('');
+    history.push('/chat');
   };
 
   const handleEdit = () => {
     if (!body || !message) {
-      cancel();
+      handleCancel();
       return;
     }
     const text = _.trim(body);
@@ -56,7 +66,7 @@ const EditModal = (props: Props) => {
       text,
       editedAt: moment().toISOString(),
     });
-    setBody('');
+    handleCancel();
   };
   const getView = () => (
     message != null
@@ -105,4 +115,4 @@ const EditModal = (props: Props) => {
   return getView();
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditModal);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MessageEditor));

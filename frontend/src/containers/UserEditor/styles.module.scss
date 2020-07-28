@@ -1,0 +1,22 @@
+:global(#root) {
+  .editContainer {
+    margin-top: 100px;
+  }
+
+  .body {
+
+  }
+
+  .body input {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid grey;
+    outline: none;
+    margin-top: 5px;
+    margin-bottom: 8px;
+  }
+
+  .body label {
+    margin-right: 5px;
+  }
+}

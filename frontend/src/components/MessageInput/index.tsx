@@ -12,10 +12,11 @@ import { AddMessageData } from '../../types';
 
 type Props = {
   add: (message: AddMessageData) => void;
+  userId: string;
 }
 
 const MessageInput = (props: Props) => {
-  const { add } = props;
+  const { add, userId } = props;
   const [body, setBody] = useState('');
   const messagesEndRef = useRef() as MutableRefObject<HTMLDivElement>;
 
@@ -30,6 +31,7 @@ const MessageInput = (props: Props) => {
     const text = _.trim(body);
     if (text.length === 0) return;
     add({
+      userId,
       text,
       createdAt: (new Date()).toString(),
     });

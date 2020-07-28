@@ -1,5 +1,7 @@
 package com.bluebell.backend.db;
 
+import com.bluebell.backend.chat.ChatRepository;
+import com.bluebell.backend.chat.modal.Message;
 import com.bluebell.backend.users.UsersRepository;
 import com.bluebell.backend.users.modal.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +22,20 @@ public class DatabaseSeeder {
     private UsersRepository usersRepository;
 
     @Autowired
+    private ChatRepository chatRepository;
+
+    @Autowired
     private PasswordEncoder bCryptPasswordEncoder;
 
     @EventListener
     public void seed(ContextRefreshedEvent event) {
         List<User> u = jdbcTemplate.query("SELECT * FROM users", (resultSet, rowNum) -> null);
+        List<Message> m = jdbcTemplate.query("SELECT * FROM messages", (resultSet, rowNum) -> null);
         if (u.size() <= 0) {
             seedUsersTable();
+        }
+        if(m.size() <= 0) {
+            seedMessagesTable();
         }
     }
 
@@ -42,9 +51,47 @@ public class DatabaseSeeder {
                 .username("demo")
                 .email("demo@gmail.com")
                 .password(bCryptPasswordEncoder.encode("demo"))
+                .avatar("https://barbertrend.com/wp-content/uploads/2017/01/man-with-grey-beard.jpg")
                 .build();
 
-        usersRepository.saveAll(List.of(admin, demo));
+        User ordinary = User
+                .builder()
+                .username("ordinary")
+                .email("ordinary@gmail.com")
+                .avatar("https://www.mantruckandbus.com/fileadmin/media/bilder/02_19/219_05_busbusiness_interviewHeader_1485x1254.jpg")
+                .password(bCryptPasswordEncoder.encode("ordinary"))
+                .build();
+
+        User observer = User
+                .builder()
+                .username("observer")
+                .email("observer@gmail.com")
+                .avatar("https://media.nature.com/w300/magazine-assets/d41586-018-07881-1/d41586-018-07881-1_16369438.jpg")
+                .password(bCryptPasswordEncoder.encode("observer"))
+                .build();
+
+        usersRepository.saveAll(List.of(admin, demo, ordinary, observer));
+    }
+
+    void seedMessagesTable() {
+        var testUser1 = usersRepository.findByUsername("demo");
+        var testUser2 = usersRepository.findByUsername("observer");
+        if(testUser1.isEmpty() || testUser2.isEmpty()) return;
+        var m1 = Message
+                .builder()
+                .text("Hello, friends!")
+                .user(testUser1.get())
+                .createdAt("2020-07-16T19:48:12.936Z")
+                .build();
+
+        var m2 = Message
+                .builder()
+                .text("Hi, friend!")
+                .user(testUser2.get())
+                .createdAt("2020-07-16T19:48:12.936Z")
+                .build();
+
+        chatRepository.saveAll(List.of(m1, m2));
     }
 
 }

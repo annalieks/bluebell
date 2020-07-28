@@ -19,10 +19,9 @@ const TextInput = ({
   const onChangeEvent = (e: ChangeEvent<HTMLInputElement>) => onChange(e, keyword);
 
   return (
-    <div className="form-group row">
-      <label className="col-sm-3 col-form-label">{ label }</label>
+    <div>
+      <label>{ label }</label>
       <input
-        className="col-sm-9"
         value={text}
         type={type}
         onChange={onChangeEvent}

@@ -9,14 +9,10 @@ import {
   ChatActionType,
 } from './actionTypes';
 import { AddMessageData, MessageData, UpdateMessageData } from '../../types';
-import service from './service';
 
 export const addMessage = (message: AddMessageData) : ChatActionType => ({
   type: ADD_MESSAGE,
-  payload: {
-    id: service.getNewId(),
-    message,
-  },
+  payload: message,
 });
 
 export const updateMessage = (message: UpdateMessageData) : ChatActionType => ({
@@ -29,21 +25,15 @@ export const deleteMessage = (id: string) : ChatActionType => ({
   payload: id,
 });
 
-export const likeMessage = (id: string) : ChatActionType => ({
-  type: LIKE_MESSAGE,
-  payload: id,
-});
-
-export const loadMessages = (messages: MessageData[]) : ChatActionType => ({
+export const loadMessages = () : ChatActionType => ({
   type: LOAD_MESSAGES,
-  payload: messages,
 });
 
-export const openEditMessage = (message: MessageData) : ChatActionType => ({
-  type: OPEN_EDIT_MESSAGE,
-  payload: message,
+export const likeMessage = (id: string, isLike: boolean) : ChatActionType => ({
+  type: LIKE_MESSAGE,
+  payload: {
+    id,
+    isLike,
+  },
 });
 
-export const cancelEditMessage = () : ChatActionType => ({
-  type: CANCEL_EDIT_MESSAGE,
-});
