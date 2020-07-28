@@ -1,4 +1,6 @@
-import {LOGIN_USER_ERROR, LOGIN_USER_SUCCESS, LoginUserType, START_LOADING} from './actionTypes';
+import {
+  LOGIN_USER_ERROR, LOGIN_USER_SUCCESS, LoginUserType, START_LOADING,
+} from './actionTypes';
 import { AuthorizedUser } from './types';
 
 const initialState = {

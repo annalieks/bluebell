@@ -1,4 +1,4 @@
-import {MessageData} from "../../types";
+import { MessageData } from '../../types';
 
 export const LOAD_MESSAGE = 'LOAD_MESSAGE';
 export const LOAD_MESSAGE_SUCCESS = 'LOAD_MESSAGE_SUCCESS';

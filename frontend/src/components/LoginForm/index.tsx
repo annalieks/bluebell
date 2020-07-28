@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Button, Segment } from 'semantic-ui-react';
-import { AuthorizedUser, UserLoginData } from '../../containers/Routing/types';
+import { UserLoginData } from '../../containers/Routing/types';
 
 type Props = {
   login: (user: UserLoginData) => void;
@@ -49,7 +49,7 @@ const LoginForm = ({ login, isLoading, startLoading }: Props) => {
       </Segment>
     </Form>
   );
-} ;
+};
 
 LoginForm.propTypes = {
   login: PropTypes.func.isRequired,

@@ -1,4 +1,6 @@
-import {ERROR, FETCH_USERS_SUCCESS, FetchUsersSuccessAction, UsersActionType} from './actionTypes';
+import {
+  ERROR, FETCH_USERS_SUCCESS, FetchUsersSuccessAction, UsersActionType,
+} from './actionTypes';
 
 const initialState = {
   users: [],

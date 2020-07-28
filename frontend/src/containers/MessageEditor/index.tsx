@@ -39,7 +39,7 @@ const MessageEditor = (props: Props) => {
 
   useEffect(() => {
     load(id);
-  }, [load]);
+  }, [load, id]);
 
   useEffect(() => {
     const focus = () => inputRef?.current?.focus();

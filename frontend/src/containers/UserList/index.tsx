@@ -57,7 +57,9 @@ class UserList extends Component<Props, {}> {
   }
 
   render() {
-    const { users, isLoading, history, error } = this.props;
+    const {
+      users, isLoading, history, error,
+    } = this.props;
     if (isLoading) {
       return <Spinner />;
     }

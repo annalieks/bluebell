@@ -3,7 +3,7 @@ import Chat from '../containers/Chat/reducer';
 import Users from '../containers/UserList/reducer';
 import UserEditor from '../containers/UserEditor/reducer';
 import Routing from '../containers/Routing/reducer';
-import MessageEditor from '../containers/MessageEditor/reducer'
+import MessageEditor from '../containers/MessageEditor/reducer';
 
 const rootReducer = combineReducers({
   chat: Chat,

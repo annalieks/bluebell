@@ -36,4 +36,3 @@ export const likeMessage = (id: string, isLike: boolean) : ChatActionType => ({
     isLike,
   },
 });
-

@@ -4,7 +4,9 @@ import {
 import axios from 'axios';
 
 import api from '../../shared/config/api.json';
-import { LOAD_MESSAGE, LOAD_MESSAGE_ERROR, LOAD_MESSAGE_SUCCESS, LoadMessageAction } from './actionTypes';
+import {
+  LOAD_MESSAGE, LOAD_MESSAGE_ERROR, LOAD_MESSAGE_SUCCESS, LoadMessageAction,
+} from './actionTypes';
 
 export function* loadMessage(action: LoadMessageAction) {
   try {

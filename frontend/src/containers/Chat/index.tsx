@@ -52,7 +52,7 @@ const Chat = (props: Props) => {
     return () => {
       document.removeEventListener('keydown', handleKeyPress);
     };
-  }, [messages]);
+  }, [messages, history, user]);
 
   useEffect(() => {
     load();

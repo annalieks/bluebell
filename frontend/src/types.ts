@@ -1,4 +1,4 @@
-import {AuthorizedUser} from "./containers/Routing/types";
+import { AuthorizedUser } from './containers/Routing/types';
 
 export type MessageData = {
  id: string;
