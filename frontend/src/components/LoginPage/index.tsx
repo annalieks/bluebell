@@ -3,32 +3,35 @@ import { Grid, Header } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import LoginForm from '../LoginForm';
-import { loginUser } from '../../containers/Routing/actions';
+import { loginUser, startLoading } from '../../containers/Routing/actions';
 
 import styles from './styles.module.scss';
 import { LoginState } from '../../types';
 
 const mapStateToProps = (state: { login: LoginState}) => ({
-  user: state.login.user,
+  isLoading: state.login.isLoading,
+  error: state.login.error,
 });
 
 const mapDispatchToProps = {
   loginUser,
+  startLoading,
 };
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
 
-const LoginPage = ({ loginUser: login, user }: Props) => {
-  return (
-    <Grid textAlign="center" verticalAlign="middle" className={styles.fill}>
-      <Grid.Column style={{ maxWidth: 450 }}>
-        <Header as="h2" color="teal" textAlign="center">
-          Login to your account
-        </Header>
-        <LoginForm login={login} user={user} />
-      </Grid.Column>
-    </Grid>
-  );
-};
+const LoginPage = ({
+  loginUser: login, startLoading: start, isLoading, error,
+}: Props) => (
+  <Grid textAlign="center" verticalAlign="middle" className={styles.form}>
+    <Grid.Column style={{ maxWidth: 450 }}>
+      <Header as="h2" textAlign="center" className={styles.header}>
+        Login to your account
+      </Header>
+      {error && <p className={styles.error}>{error}</p>}
+      <LoginForm login={login} isLoading={isLoading} startLoading={start} />
+    </Grid.Column>
+  </Grid>
+);
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginPage));

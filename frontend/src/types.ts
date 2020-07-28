@@ -45,4 +45,6 @@ export type ChatState = {
 export type LoginState = {
  isAuthorized: boolean;
  user: AuthorizedUser;
+ isLoading: boolean;
+ error: string;
 }

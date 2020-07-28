@@ -45,6 +45,7 @@ public class DatabaseSeeder {
                 .username("admin")
                 .email("admin@gmail.com")
                 .password(bCryptPasswordEncoder.encode("admin"))
+                .avatar("https://www.belfasttelegraph.co.uk/life/8f575/39297105.ece/AUTOCROP/w1240h700/2020-06-20_lif_59697446_I2.JPG")
                 .build();
         User demo = User
                 .builder()
@@ -91,7 +92,21 @@ public class DatabaseSeeder {
                 .createdAt("2020-07-16T19:48:12.936Z")
                 .build();
 
-        chatRepository.saveAll(List.of(m1, m2));
+        var m3 = Message
+                .builder()
+                .text("What's up?")
+                .user(testUser2.get())
+                .createdAt("2020-07-16T19:48:12.936Z")
+                .build();
+
+        var m4 = Message
+                .builder()
+                .text("Everything's fine, working on a project")
+                .user(testUser2.get())
+                .createdAt("2020-07-16T19:48:12.936Z")
+                .build();
+
+        chatRepository.saveAll(List.of(m1, m2, m3, m4));
     }
 
 }

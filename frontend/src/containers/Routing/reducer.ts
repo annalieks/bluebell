@@ -1,10 +1,11 @@
-import { User } from '../../types';
-import { LOGIN_USER_ERROR, LOGIN_USER_SUCCESS, LoginUserType } from './actionTypes';
+import {LOGIN_USER_ERROR, LOGIN_USER_SUCCESS, LoginUserType, START_LOADING} from './actionTypes';
 import { AuthorizedUser } from './types';
 
 const initialState = {
   isAuthorized: false,
   user: {} as AuthorizedUser,
+  isLoading: false,
+  error: '',
 };
 
 export default function (state = initialState, action: LoginUserType) {
@@ -16,6 +17,19 @@ export default function (state = initialState, action: LoginUserType) {
       };
     }
 
+    case LOGIN_USER_ERROR: {
+      return {
+        ...state,
+        isLoading: false,
+        error: 'Invalid username or password',
+      };
+    }
+    case START_LOADING: {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
     default:
       return state;
   }

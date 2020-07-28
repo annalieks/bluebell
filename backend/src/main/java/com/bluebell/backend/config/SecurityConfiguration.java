@@ -28,7 +28,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers("/login", "/register", "/h2-console/**")
             .permitAll()
-            .anyRequest().authenticated().and()
+            .anyRequest().permitAll().and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

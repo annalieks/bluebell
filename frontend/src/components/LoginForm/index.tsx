@@ -1,18 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import { Form, Button, Segment } from 'semantic-ui-react';
-import {AuthorizedUser, UserLoginData} from '../../containers/Routing/types';
-import { useHistory } from 'react-router-dom';
+import { AuthorizedUser, UserLoginData } from '../../containers/Routing/types';
 
 type Props = {
   login: (user: UserLoginData) => void;
-  user: AuthorizedUser;
+  isLoading: boolean;
+  startLoading: () => void;
 }
 
-const LoginForm = ({ login, user }: Props) => {
+const LoginForm = ({ login, isLoading, startLoading }: Props) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
 
   const usernameChanged = (data: string) => {
     setUsername(data);
@@ -23,12 +22,8 @@ const LoginForm = ({ login, user }: Props) => {
   };
 
   const handleLoginClick = async () => {
-    setIsLoading(true);
-    try {
-      login({ username, password });
-    } catch {
-      setIsLoading(false);
-    }
+    startLoading();
+    login({ username, password });
   };
 
   return (
