@@ -5,13 +5,14 @@ import {
 import api from '../../shared/config/api.json';
 import {
   ADD_USER, UPDATE_USER, DELETE_USER, FETCH_USERS,
-  AddUserAction, UpdateUserAction, DeleteUserAction,
+  AddUserAction, UpdateUserAction, DeleteUserAction, FETCH_USERS_SUCCESS,
 } from './actionTypes';
 
 export function* fetchUsers() {
   try {
-    const users = yield call(axios.get, `${api.url}/user`);
-    yield put({ type: 'FETCH_USERS_SUCCESS', payload: { users } });
+    const users = yield call(axios.get, `${api.url}/users`);
+    console.log('PUT: ', users.data);
+    yield put({ type: FETCH_USERS_SUCCESS, payload: users.data });
   } catch (error) {
     console.log('fetchUsers error:', error.message);
   }

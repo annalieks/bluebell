@@ -6,8 +6,8 @@ import Routing from '../containers/Routing/reducer';
 
 const rootReducer = combineReducers({
   chat: Chat,
-  Users,
-  UserPage,
+  users: Users,
+  user: UserPage,
   login: Routing,
 });
 

@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, withRouter, RouteComponentProps } from 'react-router-dom';
 import UserItem from './UserItem';
 import * as actions from './actions';
 import { User } from '../../types';
+import Spinner from "../../components/Spinner";
 
-const mapStateToProps = (state: User[]) => ({
-  users: state,
+import styles from './styles.module.scss';
+
+const mapStateToProps = (state: { users: { users: User[], isLoading: boolean }}) => ({
+  users: state.users.users,
+  isLoading: state.users.isLoading,
 });
 
 const mapDispatchToProps = {
@@ -14,11 +18,9 @@ const mapDispatchToProps = {
 };
 
 type Props = ReturnType<typeof mapStateToProps> &
-    typeof mapDispatchToProps
+    typeof mapDispatchToProps & RouteComponentProps
 
 class UserList extends Component<Props, {}> {
-  public history = useHistory();
-
   constructor(props: Props) {
     super(props);
     this.onEdit = this.onEdit.bind(this);
@@ -28,11 +30,12 @@ class UserList extends Component<Props, {}> {
 
   componentDidMount() {
     const { fetchUsers } = this.props;
+    console.log('Fetching');
     fetchUsers();
   }
 
   onEdit(id: string) {
-    this.history.push(`/user/${id}`);
+    this.props.history.push(`/user/${id}`);
   }
 
   onDelete(id: string) {
@@ -41,13 +44,16 @@ class UserList extends Component<Props, {}> {
   }
 
   onAdd() {
-    this.history.push('/user');
+    this.props.history.push('/user');
   }
 
   render() {
-    const { users } = this.props;
+    const { users, isLoading } = this.props;
+    if (isLoading) {
+      return <Spinner />;
+    }
     return (
-      <div className="row">
+      <div className={styles.row}>
         <div className="list-group col-10">
           {
            users.map((user) => (
@@ -77,4 +83,4 @@ class UserList extends Component<Props, {}> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserList);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UserList));
