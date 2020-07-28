@@ -7,7 +7,6 @@ import TimeSeparator from '../TimeSeparator';
 import Message from '../Message';
 
 import styles from './styles.module.scss';
-import EditModal from '../../containers/MessageEditor';
 
 type Props = {
     messages: MessageData[],

@@ -40,8 +40,10 @@ const UserPage = ({
   };
 
   useEffect(() => {
-    fetch(id);
-  }, [fetch]);
+    if (id) {
+      fetch(id);
+    }
+  }, [fetch, id]);
 
   useEffect(() => {
     if (userData) {

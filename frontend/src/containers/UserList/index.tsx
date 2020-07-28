@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { useHistory, withRouter, RouteComponentProps } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Button, List, Segment } from 'semantic-ui-react';
 import UserItem from './UserItem';
 import * as actions from './actions';
-import { User } from '../../types';
 import Spinner from '../../components/Spinner';
 
 import styles from './styles.module.scss';
+import { UsersListState } from '../../types';
 
-const mapStateToProps = (state: { users: { users: User[], isLoading: boolean }}) => ({
+const mapStateToProps = (state: { users: UsersListState}) => ({
   users: state.users.users,
   isLoading: state.users.isLoading,
+  error: state.users.error,
 });
 
 const mapDispatchToProps = {
@@ -36,7 +37,8 @@ class UserList extends Component<Props, {}> {
   }
 
   onEdit(id: string) {
-    this.props.history.push(`/user/${id}`);
+    const { history } = this.props;
+    history.push(`/user/${id}`);
   }
 
   onDelete(id: string) {
@@ -45,17 +47,22 @@ class UserList extends Component<Props, {}> {
   }
 
   onAdd() {
-    this.props.history.push('/user');
+    const { history } = this.props;
+    history.push('/user');
   }
 
   onChat() {
-    this.props.history.push('/chat');
+    const { history } = this.props;
+    history.push('/chat');
   }
 
   render() {
-    const { users, isLoading } = this.props;
+    const { users, isLoading, history, error } = this.props;
     if (isLoading) {
       return <Spinner />;
+    }
+    if (error) {
+      history.push('/error');
     }
     return (
       <Segment className={styles.usersList}>

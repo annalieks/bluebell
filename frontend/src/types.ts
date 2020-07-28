@@ -48,3 +48,9 @@ export type LoginState = {
  isLoading: boolean;
  error: string;
 }
+
+export type UsersListState = {
+ users: User[];
+ isLoading: boolean;
+ error: string;
+}

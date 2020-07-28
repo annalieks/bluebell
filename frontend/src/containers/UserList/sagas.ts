@@ -5,16 +5,15 @@ import {
 import api from '../../shared/config/api.json';
 import {
   ADD_USER, UPDATE_USER, DELETE_USER, FETCH_USERS,
-  AddUserAction, UpdateUserAction, DeleteUserAction, FETCH_USERS_SUCCESS,
+  AddUserAction, UpdateUserAction, DeleteUserAction, FETCH_USERS_SUCCESS, ERROR,
 } from './actionTypes';
 
 export function* fetchUsers() {
   try {
     const users = yield call(axios.get, `${api.url}/users`);
-    console.log('PUT: ', users.data);
     yield put({ type: FETCH_USERS_SUCCESS, payload: users.data });
   } catch (error) {
-    console.log('fetchUsers error:', error.message);
+    yield put({ type: ERROR, payload: error.message });
   }
 }
 
@@ -29,7 +28,7 @@ export function* addUser(action: AddUserAction) {
     yield call(axios.post, `${api.url}/user`, newUser);
     yield put({ type: FETCH_USERS });
   } catch (error) {
-    console.log('createUser error:', error.message);
+    yield put({ type: ERROR, payload: error.message });
   }
 }
 
@@ -45,7 +44,7 @@ export function* updateUser(action: UpdateUserAction) {
     yield call(axios.put, `${api.url}/user/${id}`, updatedUser);
     yield put({ type: FETCH_USERS });
   } catch (error) {
-    console.log('updateUser error:', error.message);
+    yield put({ type: ERROR, payload: error.message });
   }
 }
 
@@ -58,7 +57,7 @@ export function* deleteUser(action: DeleteUserAction) {
     yield call(axios.delete, `${api.url}/user/${action.payload.id}`);
     yield put({ type: FETCH_USERS });
   } catch (error) {
-    console.log('deleteUser Error:', error.message);
+    yield put({ type: ERROR, payload: error.message });
   }
 }
 
