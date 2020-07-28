@@ -23,7 +23,16 @@ public interface UsersRepository extends JpaRepository<User, UUID> {
             "u.email = :email, " +
             "u.password = :password " +
             "WHERE u.id = :id")
-    void updateUser(@Param("username") String username, @Param("email") String email,
-                    @Param("password") String password, @Param("id") UUID id);
+    void updateUserWithPassword(@Param("username") String username, @Param("email") String email,
+                                @Param("password") String password, @Param("id") UUID id);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE User u " +
+            "SET u.username = :username," +
+            "u.email = :email " +
+            "WHERE u.id = :id")
+    void updateUser(@Param("username") String username,
+                    @Param("email") String email, @Param("id") UUID id);
 
 }

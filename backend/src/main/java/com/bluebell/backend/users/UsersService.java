@@ -1,6 +1,7 @@
 package com.bluebell.backend.users;
 
 import com.bluebell.backend.auth.model.AuthUser;
+import com.bluebell.backend.exception.UserNotFoundException;
 import com.bluebell.backend.users.dto.UpdateUserDto;
 import com.bluebell.backend.users.dto.UserDto;
 import com.bluebell.backend.users.modal.User;
@@ -38,8 +39,7 @@ public class UsersService implements UserDetailsService {
 
     public UserDto findById(UUID id) {
         return usersRepository.findById(id)
-                .map(UserMapper.MAPPER::userToUserDto)
-                .orElseThrow(() -> new UsernameNotFoundException("No user found with username"));
+                .map(UserMapper.MAPPER::userToUserDto).orElseThrow(UserNotFoundException::new);
     }
 
     public List<UserDto> getAllUsers() {
@@ -57,11 +57,17 @@ public class UsersService implements UserDetailsService {
     }
 
     public void updateUser(UUID id, UpdateUserDto updateUserDto) {
-        usersRepository.updateUser(
-                updateUserDto.getUsername(),
-                updateUserDto.getEmail(),
-                bCryptPasswordEncoder.encode(updateUserDto.getPassword()),
-                id);
+        if(updateUserDto.getPassword() != null) {
+            usersRepository.updateUserWithPassword(
+                    updateUserDto.getUsername(),
+                    updateUserDto.getEmail(),
+                    bCryptPasswordEncoder.encode(updateUserDto.getPassword()),
+                    id);
+        } else {
+            usersRepository.updateUser(
+                    updateUserDto.getUsername(),
+                    updateUserDto.getEmail(), id);
+        }
     }
     public void deleteUser(UUID id) {
         usersRepository.deleteById(id);

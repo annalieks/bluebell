@@ -38,13 +38,11 @@ const MessageEditor = (props: Props) => {
   const history = useHistory();
 
   useEffect(() => {
-    console.log('loading');
     load(id);
   }, [load]);
 
   useEffect(() => {
     const focus = () => inputRef?.current?.focus();
-    console.log('message', message);
     if (message) setBody(message.text);
     focus();
   }, [message, inputRef]);
