@@ -1,6 +1,6 @@
 # Bluebell chat
 
-Bluebell chat is a chat application with users authentication and authorization. 
+Bluebell chat is a chat application with user authentication and authorization. 
 
 ## Chat with like, edit and delete message features
 ![](images/chat.png)
